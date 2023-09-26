@@ -50,7 +50,7 @@ else
 
   git add .
   git commit -m "$current_datetime - $commit_msg"
-  git pull origin main  # Pull changes from master
+  git pull origin master  # Pull changes from master
   check_for_merge_conflicts  # Check for merge conflicts
   git push -u origin "$current_branch"
   git push -u origin1 "$current_branch"
