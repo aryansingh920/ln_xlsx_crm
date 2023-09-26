@@ -34,7 +34,7 @@ if [ "$current_branch" == "m" ]; then
   git pull origin master  # Pull changes from master
   check_for_merge_conflicts  # Check for merge conflicts
   git push -u origin "$branch_name"
-  git push -u origin-1 "$branch_name"
+  git push -u origin1 "$branch_name"
 else
   # If not on "master," push to the current branch
   read -p "Enter a commit message: " commit_msg
@@ -53,5 +53,5 @@ else
   git pull origin main  # Pull changes from master
   check_for_merge_conflicts  # Check for merge conflicts
   git push -u origin "$current_branch"
-  git push -u origin-1 "$current_branch"
+  git push -u origin1 "$current_branch"
 fi
