@@ -13,7 +13,7 @@ check_for_merge_conflicts() {
 }
 
 # Check if the current branch is "master"
-if [ "$current_branch" == "main" ]; then
+if [ "$current_branch" == "" ]; then
   read -p "Enter a new branch name: " branch_name
   # Create a new branch from "master"
   git checkout -b "$branch_name"
