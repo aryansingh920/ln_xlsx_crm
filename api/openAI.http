@@ -1,0 +1,7 @@
+# POST Request to Translate Text to French
+POST http://localhost:3000/translate
+Content-Type: application/json
+
+{
+  "text": "Translate this text to French."
+}

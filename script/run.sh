@@ -15,6 +15,7 @@ fi
 
 echo "Setting environment variables..."
 export PORT=$port
+export OPENAI_API_KEY=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
 
 
 echo "Starting server..."
