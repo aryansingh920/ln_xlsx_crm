@@ -33,5 +33,7 @@ else
 fi
 
 npm ls
+echo "Compiling SCSS to CSS..."
+bash sass.sh
 npm start
 npm test

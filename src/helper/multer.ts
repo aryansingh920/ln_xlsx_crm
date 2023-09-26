@@ -1,15 +1,17 @@
 import multer from "multer";
 import { Request } from "express";
 
-const storage = multer.diskStorage({
-  destination: (req: Request, file, cb) => {
-    cb(null, "uploads/"); // Specify the destination directory
-  },
-  filename: (req: Request, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix + "-" + file.originalname); // Specify the filename
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: (req: Request, file, cb) => {
+//     cb(null, "uploads/"); // Specify the destination directory
+//   },
+//   filename: (req: Request, file, cb) => {
+//     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+//     cb(null, file.fieldname + "-" + uniqueSuffix + "-" + file.originalname); // Specify the filename
+//   },
+// });
+
+const storage = multer.memoryStorage();
 
 const fileFilter = (
   req: Request,
@@ -32,7 +34,7 @@ const fileFilter = (
 
 const upload = multer({
   storage, // Specify the storage engine to use
-  fileFilter, // Specify the file filter function
+//   fileFilter, // Specify the file filter function
   limits: {
     // fileSize: 1024 * 1024, // Specify the maximum file size in bytes (if needed)
   },
