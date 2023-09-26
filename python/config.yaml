@@ -1,0 +1,3 @@
+base_url: https://api.bardai.com
+api_key: your_bard_api_key_here
+openai_api_key: your_openai_api_key_here
