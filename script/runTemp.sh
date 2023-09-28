@@ -23,6 +23,7 @@ export BARD_1PSID_cookie_value=
 export BARD_1PSIDTS_cookie_value=
 export BARD_1PSIDCC_cookie_value=
 export RAPID_API_KEY_VALUE=
+export ZERO_BOUNCE_API_KEY_VALUE=
 
 # Create the .env file
 echo "Creating .env file..."
@@ -32,6 +33,8 @@ echo "BARD_1PSID_cookie_value=$BARD_1PSID_cookie_value" >> "$DESTINATION_PATH"
 echo "BARD_1PSIDTS_cookie_value=$BARD_1PSIDTS_cookie_value" >> "$DESTINATION_PATH"
 echo "BARD_1PSIDCC_cookie_value=$BARD_1PSIDCC_cookie_value" >> "$DESTINATION_PATH"
 echo "RAPID_API_KEY_VALUE=$RAPID_API_KEY_VALUE" >> "$DESTINATION_PATH"
+echo "ZERO_BOUNCE_API_KEY_VALUE=$ZERO_BOUNCE_API_KEY_VALUE" >> "$DESTINATION_PATH"
+
 
 echo "Starting server..."
 echo "Node Version"
