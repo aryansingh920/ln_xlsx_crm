@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express, { Application, Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import cors from "cors";
@@ -27,8 +29,8 @@ app.use("/", router);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
-  res.status(500).render("404",{
-    error: err.stack
+  res.status(500).render("404", {
+    error: err.stack,
   });
 });
 

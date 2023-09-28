@@ -18,11 +18,11 @@ fi
 
 echo "Setting environment variables..."
 export PORT=$port
-export OPENAI_API_KEY=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
-export BARD_1PSID_cookie_value=bQjVCw4WGycbgM4nWjFD-yftefuq5MSZO8mcMJtmK5iEM5VWgbiOR8atk4zUEUw-ofy1AQ
-export BARD_1PSIDTS_cookie_value=sidts-CjEB3e41hWwoR57IMF25qesAjAdZZWKwAO7uYTSbC83a1Djg3ooTjRtxUhgFlh7sj-rvEAA
-export BARD_1PSIDCC_cookie_value=APoG2W8JW1f-0GrRmvbZDFz6A98ek8hKkD3bHDMyyZmJekaX9Bm-kKB2nrRFGoRLeYcIwkOwrg
-export RAPID_API_KEY_VALUE="787f1ab0d7msh00b27427955fd1cp1fc1b8jsn2cb7314ce4bb"
+export OPENAI_API_KEY=
+export BARD_1PSID_cookie_value=
+export BARD_1PSIDTS_cookie_value=
+export BARD_1PSIDCC_cookie_value=
+export RAPID_API_KEY_VALUE=
 
 # Create the .env file
 echo "Creating .env file..."

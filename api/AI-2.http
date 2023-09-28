@@ -1,0 +1,7 @@
+# POST Request to get the translated text
+POST http://localhost:3000/translate
+Content-Type: application/json
+
+{
+  "text": "àryäÑ(He/Him) Singh ; What is the first name in it"
+}

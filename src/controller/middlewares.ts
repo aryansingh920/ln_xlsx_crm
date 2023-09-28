@@ -1,7 +1,7 @@
 import Home from "../middleware/home";
 import Upload from "../middleware/uploadFile";
-import OpenAI from "../middleware/openAI";
+import AIEngine from "../middleware/AIEngine";
 
-const middleware = { Home, Upload, OpenAI };
+const middleware = { Home, Upload, AIEngine };
 
 export default middleware;

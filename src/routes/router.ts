@@ -7,7 +7,7 @@ const router: Router = express.Router();
 router
   .get("/", middleware.Home.home_get)
   .post("/upload", upload.single("file"), middleware.Upload.uploadFile_post)
-  .post("/translate", middleware.OpenAI.openaiMiddleware)
+  .post("/translate", middleware.AIEngine.AIMiddleware)
 
   .get("*", (req: Request, res: Response) => {
     res.render("404", {

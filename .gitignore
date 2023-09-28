@@ -1,3 +1,5 @@
 /node_modules
 /.vscode
 /python/script/__pycache__
+/script/run.sh
+/.env
