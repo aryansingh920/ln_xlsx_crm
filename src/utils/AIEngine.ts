@@ -66,7 +66,7 @@ export async function Conversation_gpt35(query: String): Promise<void> {
     data: {
       messages: [
         {
-          role: "user",
+          role: "ai",
           content: query,
         },
       ],
@@ -97,7 +97,7 @@ export async function Bard_Palm2(query: String): Promise<void> {
     data: {
       messages: [
         {
-          role: "user",
+          role: "ai",
           content: query,
         },
       ],
@@ -126,7 +126,7 @@ export async function Chat_GPT(query: String): Promise<void> {
     data: {
       messages: [
         {
-          role: "user",
+          role: "ai",
           content: query,
         },
       ],
@@ -155,7 +155,7 @@ export async function Chat_GPT_35_Conversation(query: String): Promise<void> {
     data: {
       messages: [
         {
-          role: "user",
+          role: "ai",
           content: query,
         },
       ],
@@ -214,5 +214,29 @@ export async function Chat_Llama_2(query: String): Promise<void> {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+}
+
+export async function Question_Answer(query: String): Promise<void> {
+  const options = {
+    method: "POST",
+    url: "https://open-ai21.p.rapidapi.com/qa",
+    headers: {
+      "content-type": "application/json",
+      "X-RapidAPI-Key": process.env.RAPID_API_KEY_VALUE,
+      "X-RapidAPI-Host": "open-ai21.p.rapidapi.com",
+    },
+    data: {
+      question:
+        "Give just the first name without accents with first letter capitalized",
+      context: "àryäÑ(He/Him) Singh",
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
   }
 }
