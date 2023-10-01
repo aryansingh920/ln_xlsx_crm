@@ -9,6 +9,8 @@ import {
 } from "../utils/FolderManipulation";
 import { Constants } from "../constants/constants";
 import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
+import { getExcelFileDetails } from "../utils/ExcelManipulation/getExcelFileDetails";
+import _ from "lodash";
 
 const uploadFile_post = async (req: Request, res: Response) => {
   console.log("Path", printCurrentDirectory());
@@ -68,10 +70,28 @@ const uploadFile_post = async (req: Request, res: Response) => {
         __dirname,
         `../../uploads/${Constants.FileName}`
       );
+      const excelFileDetails = await getExcelFileDetails(excelFilePath);
       const columnNames = await getColumnNames(excelFilePath);
+
+      // console.log("Column Names:", columnNames);
+
+      let toKeepArray: string[] = [];
+
+      columnNames.forEach((element) => {
+        // console.log(element);
+        // console.log(Constants.Columns_To_Keep);
+        if (Constants.Columns_To_Keep.includes(element)) {
+          console.log(element);
+          toKeepArray.push(element);
+        }
+      });
+
+      // console.log("File Details:", excelFileDetails);
 
       res.status(200).render("success", {
         msg: `Excel file saved as '${Constants.FileName}'`,
+        excelFileDetails: excelFileDetails,
+        toKeepArray: toKeepArray,
         columnNames: columnNames,
       });
     })

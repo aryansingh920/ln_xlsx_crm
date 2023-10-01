@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="" />
     </head>
 
-    <body>
+    <body class="container">
         <div class="px-4 py-5 my-5 text-center">
             <img class="d-block mx-auto mb-4"
                 src="https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg"
@@ -32,27 +32,53 @@
                     </button>
                 </div>
             </div>
+<div>
+    <br />
+    <b>
+        Column Names :
+    </b>
+    <% excelFileDetails.columnNames.forEach(element=> { %>
+
+        <%= element %> ,
+
+            <% }) %>
+                <br>
+                <b>
+                    Number of Rows:
+                </b>
+                <%= excelFileDetails.rowCount %>
+
+
+</div>
+
             <br>
             <hr />
 
-            <div>
-                <h4><b>Column Names</b></h4>
-                <p class="text-danger">Select Column Names to delete</p>
 
-                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                    <% if (columnNames && columnNames.length> 0) { %> <% columnNames.forEach(element=> { %>
-                            <div class="m-1">
-                                <input type="checkbox" class="btn-check" id="<%= element %>" autocomplete="off" />
+
+        <div>
+            <h4><b>Column Names</b></h4>
+            <p class="text-danger">Select Column Names to delete</p>
+            <div class="btn-group row" role="group" aria-label="Basic checkbox toggle button group">
+                <% if (columnNames && columnNames.length> 0) { %>
+                    <% columnNames.forEach((element)=> { %>
+                        <div class="col-1 m-1">
+                            <% if (toKeepArray && toKeepArray.includes(element)) { %>
+                                <input type="checkbox" name="<%= element %>" class="btn-check" id="<%= element %>"
+                                    autocomplete="off" />
                                 <label class="btn btn-outline-primary" for="<%= element %>">
                                     <%= element %>
                                 </label>
-                            </div>
-                            <% }); %>
-                                <% } else { %>
-                                    <p>No column names available.</p>
-                                    <% } %>
-                </div>
+                                <% } %>
+
+                        </div>
+                        <% }); %>
+                            <% } else { %>
+                                <p>No column names available.</p>
+                                <% } %>
+                                    </div>
             </div>
+
 
             <hr>
         </div>
