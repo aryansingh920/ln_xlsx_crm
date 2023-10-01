@@ -54,7 +54,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
       // Define the output file path and name (change as needed)
       const outputFilePath = path.join(
         __dirname,
-        `../../uploads/${Constants.FileName}}`
+        `../../uploads/${Constants.FileName}`
       );
 
       // Save the new workbook to the specified path
@@ -66,7 +66,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
       //excel file path
       const excelFilePath = path.join(
         __dirname,
-        `../../uploads/${Constants.FileName}}`
+        `../../uploads/${Constants.FileName}`
       );
       const columnNames = await getColumnNames(excelFilePath);
 
