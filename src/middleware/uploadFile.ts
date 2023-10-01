@@ -2,8 +2,22 @@ import { Request, Response } from "express";
 import path from "path";
 import ExcelJS from "exceljs";
 import saveExcelFile from "../utils/ExcelManipulation/saveFile";
+import {
+  printCurrentDirectory,
+  deleteDirectory,
+  createDirectory,
+} from "../utils/FolderManipulation";
+import { Constants } from "../constants/constants";
+import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
 
-const uploadFile_post = (req: Request, res: Response) => {
+const uploadFile_post = async (req: Request, res: Response) => {
+  console.log("Path", printCurrentDirectory());
+
+  // Delete the uploads directory
+  await deleteDirectory(path.join(printCurrentDirectory(), "uploads"));
+  // Create a new uploads directory
+  await createDirectory(path.join(printCurrentDirectory(), "uploads"));
+
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
@@ -38,14 +52,28 @@ const uploadFile_post = (req: Request, res: Response) => {
       });
 
       // Define the output file path and name (change as needed)
-      const outputFilePath = path.join(__dirname, "../../uploads/output.xlsx");
+      const outputFilePath = path.join(
+        __dirname,
+        `../../uploads/${Constants.FileName}}`
+      );
 
       // Save the new workbook to the specified path
       return saveExcelFile(newWorkbook, outputFilePath);
     })
-    .then(() => {
+    .then(async () => {
       // Send a response indicating success or provide a download link
-      res.status(200).send("Excel file saved as 'output.xlsx'");
+
+      //excel file path
+      const excelFilePath = path.join(
+        __dirname,
+        `../../uploads/${Constants.FileName}}`
+      );
+      const columnNames = await getColumnNames(excelFilePath);
+
+      res.status(200).render("success", {
+        msg: `Excel file saved as '${Constants.FileName}'`,
+        columnNames: columnNames,
+      });
     })
     .catch((error) => {
       console.error("Error loading Excel file:", error.message);

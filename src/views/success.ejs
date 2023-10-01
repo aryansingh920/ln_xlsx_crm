@@ -1,0 +1,63 @@
+<%- include('header/cdn') %>
+    <!DOCTYPE html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+    <html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title></title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="" />
+    </head>
+
+    <body>
+        <div class="px-4 py-5 my-5 text-center">
+            <img class="d-block mx-auto mb-4"
+                src="https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg"
+                alt="" width="72" />
+            <h1 class="display-5 fw-bold text-body-emphasis">Successful</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4">
+                    <%= msg %>
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href="/" type="button" class="btn btn-primary btn-lg px-4 gap-3">Home</a>
+                    <button type="button" class="btn btn-outline-secondary btn-lg px-4 disabled">
+                        Secondary
+                    </button>
+                </div>
+            </div>
+            <br>
+            <hr />
+
+            <div>
+                <h4><b>Column Names</b></h4>
+                <p class="text-danger">Select Column Names to delete</p>
+
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <% if (columnNames && columnNames.length> 0) { %> <% columnNames.forEach(element=> { %>
+                            <div class="m-1">
+                                <input type="checkbox" class="btn-check" id="<%= element %>" autocomplete="off" />
+                                <label class="btn btn-outline-primary" for="<%= element %>">
+                                    <%= element %>
+                                </label>
+                            </div>
+                            <% }); %>
+                                <% } else { %>
+                                    <p>No column names available.</p>
+                                    <% } %>
+                </div>
+            </div>
+
+            <hr>
+        </div>
+
+        <script src="" async defer></script>
+    </body>
+
+    </html>
