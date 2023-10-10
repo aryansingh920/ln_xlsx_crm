@@ -16,6 +16,9 @@ else
   echo "No process listening on port $port"
 fi
 
+echo "Installing Python dependencies..."
+pip install -r requirements.txt
+
 echo "Setting environment variables..."
 export PORT=$port
 export OPENAI_API_KEY=

@@ -1,9 +1,13 @@
 // Export a constant with default values
-export const Constants: {
+import path from "path";
+
+const Constants: {
   FileName: string;
+  SheetName: string;
   Columns_To_Keep: string[];
 } = {
   FileName: "output.xlsx",
+  SheetName: "Sheet 1",
   Columns_To_Keep: [
     "Name",
     "First Name",
@@ -19,5 +23,12 @@ export const Constants: {
   ],
 };
 
-// // You can use Constants.FileName to access the default value
-// console.log(Constants.FileName); // "output.xlsx"
+// Create the file path
+const FilePath: string = path.join(
+  __dirname,
+  `../../uploads/${Constants.FileName}`
+);
+
+// Export the FilePath variable
+export { FilePath, Constants };
+

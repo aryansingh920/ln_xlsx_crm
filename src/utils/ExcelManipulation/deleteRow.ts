@@ -31,15 +31,17 @@ async function deleteRow(
   );
 }
 
-// Example usage
-const excelFilePath = "example.xlsx"; // Replace with your Excel file path
-const sheetNameToDeleteFrom = "Sheet1"; // Replace with the name of your worksheet
-const rowToDelete = 2; // Replace with the row index you want to delete
+export { deleteRow };
 
-deleteRow(excelFilePath, sheetNameToDeleteFrom, rowToDelete)
-  .then(() => {
-    console.log("Row deletion completed.");
-  })
-  .catch((err) => {
-    console.error("Error deleting row:", err);
-  });
+// // Example usage
+// const excelFilePath = "example.xlsx"; // Replace with your Excel file path
+// const sheetNameToDeleteFrom = "Sheet1"; // Replace with the name of your worksheet
+// const rowToDelete = 2; // Replace with the row index you want to delete
+
+// deleteRow(excelFilePath, sheetNameToDeleteFrom, rowToDelete)
+//   .then(() => {
+//     console.log("Row deletion completed.");
+//   })
+//   .catch((err) => {
+//     console.error("Error deleting row:", err);
+//   });

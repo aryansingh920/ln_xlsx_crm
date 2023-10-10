@@ -7,7 +7,7 @@ import {
   deleteDirectory,
   createDirectory,
 } from "../utils/FolderManipulation";
-import { Constants } from "../constants/constants";
+import { Constants, FilePath } from "../constants/constants";
 import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
 import { getExcelFileDetails } from "../utils/ExcelManipulation/getExcelFileDetails";
 import _ from "lodash";
@@ -43,7 +43,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
 
       // Create a new Excel workbook
       const newWorkbook = new ExcelJS.Workbook();
-      const newWorksheet = newWorkbook.addWorksheet("Sheet 1");
+      const newWorksheet = newWorkbook.addWorksheet(Constants.SheetName);
 
       // Add headers to the new worksheet
       newWorksheet.addRow(headers);
@@ -54,10 +54,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
       });
 
       // Define the output file path and name (change as needed)
-      const outputFilePath = path.join(
-        __dirname,
-        `../../uploads/${Constants.FileName}`
-      );
+      const outputFilePath = FilePath;
 
       // Save the new workbook to the specified path
       return saveExcelFile(newWorkbook, outputFilePath);
@@ -66,10 +63,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
       // Send a response indicating success or provide a download link
 
       //excel file path
-      const excelFilePath = path.join(
-        __dirname,
-        `../../uploads/${Constants.FileName}`
-      );
+      const excelFilePath = FilePath;
       const excelFileDetails = await getExcelFileDetails(excelFilePath);
       const columnNames = await getColumnNames(excelFilePath);
 
@@ -81,7 +75,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
         // console.log(element);
         // console.log(Constants.Columns_To_Keep);
         if (Constants.Columns_To_Keep.includes(element)) {
-          console.log(element);
+          // console.log(element);
           toKeepArray.push(element);
         }
       });
