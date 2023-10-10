@@ -16,13 +16,17 @@ def main():
     col = sys.argv[3]
     output_file_path = sys.argv[4]
 
+    print(f"Argument 1: {FilePath}")
+    print(f"Argument 2: {Action}")
+    print(f"Argument 3: {col}")
+    print(f"Argument 4: {output_file_path}")
 
     excel_file = ExcelFile(FilePath)
     excel_file.display_details()
     
         # Your script logic here
-    # print(f"Argument 1: {FilePath}")
-    # print(f"Argument 2: {Action}")
+
+
 
 
     if(Action == "deleteColumn"):

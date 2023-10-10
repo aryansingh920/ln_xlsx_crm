@@ -26,7 +26,7 @@ const Changes = async (req: Request, res: Response) => {
     const outputFilePath = FilePath; // Replace with the path for the output Excel file
     const sheetName = Constants.SheetName; // Replace with the name of the sheet you want to modify
     // const co = 2; // Replace with the index of the column you want to delete
-    deleteColumn(
+    await deleteColumn(
       inputFilePath,
       outputFilePath,
       sheetName,

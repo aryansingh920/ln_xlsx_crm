@@ -2,7 +2,6 @@ import * as ExcelJS from "exceljs";
 import * as fs from "fs";
 import { spawn } from "child_process";
 
-
 async function deleteColumn(
   inputFilePath: string,
   outputFilePath: string,
@@ -11,10 +10,15 @@ async function deleteColumn(
 ) {
   console.log(inputFilePath, outputFilePath, sheetName, columnName);
   const filePath = "python/main.py";
-  //console current directory
+  // console.log current directory
   console.log("Current directory:", process.cwd());
-  // const outputFilePath = "output.xlsx";
-  const args = [inputFilePath,"deleteColumn", columnName, outputFilePath]; // Replace with actual values
+
+  const args = [
+    inputFilePath,
+    "deleteColumn",
+    columnName,
+    `${columnName}.xlsx`,
+  ]; // Replace with actual values
 
   console.log("Args", args);
   const pythonProcess = spawn("python", [filePath, ...args]);
@@ -27,52 +31,60 @@ async function deleteColumn(
     console.error(`Error in Python Script: ${data}`);
   });
 
-  pythonProcess.on("close", (code) => {
-    console.log(`Python Script Exited with Code: ${code}`);
+  const code = await new Promise<number>((resolve, reject) => {
+    pythonProcess.on("close", (code: number | null) => {
+      if (code === null) {
+        reject(new Error("Python script exited with a null code."));
+      } else {
+        console.log(`Python Script Exited with Code: ${code}`);
+        resolve(code);
+      }
+    });
+
+    pythonProcess.on("error", (error) => {
+      console.error(`Error starting Python Script: ${error.message}`);
+      reject(error);
+    });
   });
 
-  // // Load the workbook
-  // const workbook = new ExcelJS.Workbook();
-  // await workbook.xlsx.readFile(inputFilePath);
+  // if (code === 0) {
+  //   // Load the workbook
+  //   const workbook = new ExcelJS.Workbook();
+  //   await workbook.xlsx.readFile(inputFilePath);
 
-  // // Get the worksheet by name and assert that it's not null or undefined
-  // const worksheet = workbook.getWorksheet(sheetName);
+  //   // Get the worksheet by name and assert that it's not null or undefined
+  //   const worksheet = workbook.getWorksheet(sheetName);
 
-  // if (!worksheet) {
-  //   throw new Error(`Sheet "${sheetName}" not found in the workbook.`);
-  // }
-
-  // // Find the column by name
-  // let columnIndex = -1;
-
-  // worksheet.getRow(1).eachCell({ includeEmpty: true }, (cell, colNumber) => {
-  //   if (cell.value === columnName) {
-  //     columnIndex = colNumber;
+  //   if (!worksheet) {
+  //     throw new Error(`Sheet "${sheetName}" not found in the workbook.`);
   //   }
-  // });
 
-  // console.log("Column Index", columnIndex);
+  //   // Find the column by name
+  //   let columnIndex = -1;
 
-  // if (columnIndex >= 1) {
-  //   // Remove the specified column
-  //   worksheet.columns.splice(columnIndex - 1, 1);
+  //   worksheet.getRow(1).eachCell({ includeEmpty: true }, (cell, colNumber) => {
+  //     if (cell.value === columnName) {
+  //       columnIndex = colNumber;
+  //     }
+  //   });
 
-  //   // Save the modified workbook to a new file
-  //   await workbook.xlsx.writeFile(outputFilePath);
-  //   console.log(`Column "${columnName}" deleted successfully.`);
+  //   console.log("Column Index", columnIndex);
+
+  //   if (columnIndex >= 1) {
+  //     // Remove the specified column
+  //     worksheet.columns.splice(columnIndex - 1, 1);
+
+  //     // Save the modified workbook to a new file
+  //     await workbook.xlsx.writeFile(outputFilePath);
+  //     console.log(`Column "${columnName}" deleted successfully.`);
+  //   } else {
+  //     throw new Error(
+  //       `Column "${columnName}" not found in sheet "${sheetName}".`
+  //     );
+  //   }
   // } else {
-  //   throw new Error(
-  //     `Column "${columnName}" not found in sheet "${sheetName}".`
-  //   );
+  //   console.error("Python script exited with a non-zero code.");
   // }
 }
 
 export { deleteColumn };
-
-// Example usage:
-// const inputFilePath = "input.xlsx"; // Replace with the path to your input Excel file
-// const outputFilePath = "output.xlsx"; // Replace with the path for the output Excel file
-// const sheetName = "Sheet1"; // Replace with the name of the sheet you want to modify
-// const columnNameToDelete = "ColumnName"; // Replace with the name of the column you want to delete
-
-// deleteColumn(inputFilePath, outputFilePath, sheetName, columnNameToDelete);
