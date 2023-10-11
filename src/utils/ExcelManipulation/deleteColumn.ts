@@ -22,7 +22,7 @@ async function deleteColumn(
     outputFilePath,
   ]; // Replace with actual values
 
-  console.log("Args", args);
+  // console.log("Args", args);
   const pythonProcess = spawn("python", [filePath, ...args]);
 
   pythonProcess.stdout.on("data", (data) => {
