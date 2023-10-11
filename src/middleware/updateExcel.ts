@@ -7,6 +7,16 @@ import { deleteColumn } from "../utils/ExcelManipulation/deleteColumn";
 import { Constants, FilePath, OutputFilePath } from "../constants/constants";
 // import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
 import {getCellsForColumn} from "../utils/ExcelManipulation/getCellsFromColumnNames";
+import {
+  Chat_GPT_35_Conversation,
+  Chat_GPT_35_Chat,
+  Chat_GPT,
+} from "../utils/AIEngine";
+import {
+  FirstNameQuery,
+  LastNameQuery,
+  FullNameQuery,
+} from "../utils/QueryExtract/LastName";
 
 const Changes = async (req: Request, res: Response) => {
   let removeColumnArray: string[] = [];
@@ -43,13 +53,35 @@ const Changes = async (req: Request, res: Response) => {
   //----------------------------------------------
   const filePath = outputFilePath;
   const columnNameToFind = "Last Name";
-  let companyNames: string[] = [];
+  let columnCells: string[] = [];
   try {
-    companyNames = await getCellsForColumn(filePath, columnNameToFind);
+    columnCells = await getCellsForColumn(filePath, columnNameToFind);
   } catch (error) {
     console.error("Error:", error);
   }
-  console.log("Company Names:", companyNames);
+
+  // console.log("Column Cells:", columnCells);
+
+  for (let cell in columnCells) {
+    if (
+      columnCells[cell] !== "Name" ||
+      columnCells[cell] !== "Last Name" ||
+      columnCells[cell] !== "First Name"
+    ) {
+      console.log("Cell:", columnCells[cell]);
+      console.log(
+        await Chat_GPT_35_Chat(await FullNameQuery(columnCells[cell]))
+      );
+      console.log(
+        await Chat_GPT_35_Conversation(await FirstNameQuery(columnCells[cell]))
+      );
+      console.log(
+        await Chat_GPT_35_Conversation(await LastNameQuery(columnCells[cell]))
+      );
+    }
+  }
+
+  // console.log("Company Names:", companyNames);
   //----------------------------------------------
 
   res.send(req.body);

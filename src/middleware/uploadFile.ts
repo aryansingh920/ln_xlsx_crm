@@ -12,8 +12,10 @@ import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
 import { getExcelFileDetails } from "../utils/ExcelManipulation/getExcelFileDetails";
 import _ from "lodash";
 
+
+
 const uploadFile_post = async (req: Request, res: Response) => {
-  console.log("Path", printCurrentDirectory());
+  // console.log("Path", printCurrentDirectory());
 
   // Delete the uploads directory
   await deleteDirectory(path.join(printCurrentDirectory(), "uploads"));
