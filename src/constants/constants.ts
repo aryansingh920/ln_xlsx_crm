@@ -23,12 +23,17 @@ const Constants: {
   ],
 };
 
-// Create the file path
+
 const FilePath: string = path.join(
   __dirname,
   `../../uploads/${Constants.FileName}`
 );
 
+const OutputFilePath: string = path.join(
+  __dirname,
+  `../../output/${Constants.FileName}`
+);
+
 // Export the FilePath variable
-export { FilePath, Constants };
+export { FilePath, Constants, OutputFilePath };
 

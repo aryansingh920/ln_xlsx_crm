@@ -1,23 +1,25 @@
 import * as ExcelJS from "exceljs";
 import * as fs from "fs";
 import { spawn } from "child_process";
+import _ from "lodash";
 
 async function deleteColumn(
   inputFilePath: string,
   outputFilePath: string,
   sheetName: string,
-  columnName: string
+  columnName: string[]
 ) {
   console.log(inputFilePath, outputFilePath, sheetName, columnName);
   const filePath = "python/main.py";
   // console.log current directory
+  console.log("Remove column names ", columnName);
   console.log("Current directory:", process.cwd());
 
   const args = [
     inputFilePath,
     "deleteColumn",
-    columnName,
-    `${columnName}.xlsx`,
+    _.join(columnName, ","),
+    outputFilePath,
   ]; // Replace with actual values
 
   console.log("Args", args);

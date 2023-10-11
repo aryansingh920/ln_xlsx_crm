@@ -13,12 +13,12 @@ def main():
     # Access the command-line arguments
     FilePath = sys.argv[1]
     Action = sys.argv[2]
-    col = sys.argv[3]
+    columns = sys.argv[3]
     output_file_path = sys.argv[4]
 
     print(f"Argument 1: {FilePath}")
     print(f"Argument 2: {Action}")
-    print(f"Argument 3: {col}")
+    print(f"Argument 3: {columns.split(',')}")
     print(f"Argument 4: {output_file_path}")
 
     excel_file = ExcelFile(FilePath)
@@ -30,14 +30,16 @@ def main():
 
 
     if(Action == "deleteColumn"):
-        print("deleteColumn",col)
-        excel_file.delete_column(column_name=col)
+        print("deleteColumn",columns)
+        for col in columns.split(','):
+            excel_file.delete_column(column_name=col)
     excel_file.save_to_excel(output_file_path=output_file_path)
 
         
 
 
 if __name__ == "__main__":
+    print("Python : main")
     main()
 
 
