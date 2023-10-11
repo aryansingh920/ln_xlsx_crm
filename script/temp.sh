@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Run the check_node_python.sh script
+./check_node_python.sh
+
 # Specify the destination path for the .env file
 DESTINATION_PATH="../.env"
 
@@ -15,6 +18,7 @@ if [ -n "$pid" ]; then
 else
   echo "No process listening on port $port"
 fi
+
 
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
