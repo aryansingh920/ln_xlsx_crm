@@ -9,11 +9,11 @@ async function deleteColumn(
   sheetName: string,
   columnName: string[]
 ) {
-  console.log(inputFilePath, outputFilePath, sheetName, columnName);
+  // console.log(inputFilePath, outputFilePath, sheetName, columnName);
   const filePath = "python/main.py";
   // console.log current directory
-  console.log("Remove column names ", columnName);
-  console.log("Current directory:", process.cwd());
+  // console.log("Remove column names ", columnName);
+  // console.log("Current directory:", process.cwd());
 
   const args = [
     inputFilePath,

@@ -16,10 +16,10 @@ def main():
     columns = sys.argv[3]
     output_file_path = sys.argv[4]
 
-    print(f"Argument 1: {FilePath}")
-    print(f"Argument 2: {Action}")
-    print(f"Argument 3: {columns.split(',')}")
-    print(f"Argument 4: {output_file_path}")
+    # print(f"Argument 1: {FilePath}")
+    # print(f"Argument 2: {Action}")
+    # print(f"Argument 3: {columns.split(',')}")
+    # print(f"Argument 4: {output_file_path}")
 
     excel_file = ExcelFile(FilePath)
     excel_file.display_details()
@@ -30,7 +30,7 @@ def main():
 
 
     if(Action == "deleteColumn"):
-        print("deleteColumn",columns)
+        # print("deleteColumn",columns)
         for col in columns.split(','):
             excel_file.delete_column(column_name=col)
     excel_file.save_to_excel(output_file_path=output_file_path)

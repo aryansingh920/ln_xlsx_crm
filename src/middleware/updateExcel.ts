@@ -28,7 +28,7 @@ const Changes = async (req: Request, res: Response) => {
     removeColumnArray
   )
     .then(() => {
-      console.log(`Column ${""} deleted successfully.`);
+      console.log(`Columns ${""} deleted successfully.`);
     })
     .catch((error) => {
       console.error("Error:", error);
