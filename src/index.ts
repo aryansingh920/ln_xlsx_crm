@@ -24,7 +24,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files from the 'public' directory
 
 // Routes
-
+//print a line separator after every request
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log("\n");
+  console.log("--------------------------------------------------")
+  console.log("\n")
+  next();
+});
 app.use("/", router);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
