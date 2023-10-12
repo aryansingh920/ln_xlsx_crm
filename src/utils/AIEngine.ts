@@ -46,7 +46,7 @@ export async function BardAI(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -77,7 +77,7 @@ export async function Conversation_gpt35(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -106,7 +106,7 @@ export async function Bard_Palm2(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -135,12 +135,17 @@ export async function Chat_GPT(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
     throw error;
   }
+}
+
+interface ResponseType {
+  MPT: string;
+  servercode: number;
 }
 
 export async function Chat_GPT_35_Conversation(query: String): Promise<void> {
@@ -165,7 +170,7 @@ export async function Chat_GPT_35_Conversation(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -173,7 +178,7 @@ export async function Chat_GPT_35_Conversation(query: String): Promise<void> {
   }
 }
 
-export async function Chat_GPT_35_Chat(query: String): Promise<void> {
+export async function Chat_GPT_35_Chat(query: String): Promise<ResponseType> {
   const options = {
     method: "POST",
     url: "https://open-ai21.p.rapidapi.com/chatmpt",
@@ -187,7 +192,7 @@ export async function Chat_GPT_35_Chat(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -209,7 +214,7 @@ export async function Chat_Llama_2(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -235,7 +240,7 @@ export async function Question_Answer(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
   } catch (error) {
     console.error(error);
   }
