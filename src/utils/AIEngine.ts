@@ -192,7 +192,7 @@ export async function Chat_GPT_35_Chat(query: String): Promise<ResponseType> {
 
   try {
     const response = await axios.request(options);
-    // console.log(response.data);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);

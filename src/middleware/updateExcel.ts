@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import {
   endsWithKeep,
   endsWithRemove,
@@ -22,6 +22,7 @@ import {
 } from "../utils/QueryExtract/Name";
 import _ from "lodash";
 import { getStringsInsideDoubleQuotes } from "../utils/QueryExtract/StringInsideQuotes";
+import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
 
 const Changes = async (req: Request, res: Response) => {
   let removeColumnArray: string[] = [];
@@ -57,61 +58,46 @@ const Changes = async (req: Request, res: Response) => {
   // Get Cells From Column Names
   //----------------------------------------------
   const filePath = outputFilePath;
-  const columnNameToFind = "Name";
-  let columnCells: string[] = [];
-  try {
-    columnCells = await getCellsForColumn(filePath, columnNameToFind);
-  } catch (error) {
-    console.error("Error:", error);
-  }
 
-  // console.log("Column Cells:", columnCells);
+  const columnNames = await getColumnNames(filePath);
 
-  for (let cell in columnCells) {
-    if (
-      _.trim(columnCells[cell]) !== "Name"
-      // _.trim(columnCells[cell]) !== "Last Name" ||
-      // _.trim(columnCells[cell]) !== "First Name"
-    ) {
-      console.log("Cell:", columnCells[cell]);
-      const firstNameQuery = await FirstNameQuery(columnCells[cell]);
-      const lastNameQuery = await LastNameQuery(columnCells[cell]);
-      const fullNameQuery = await FullNameQuery(columnCells[cell]);
+  let newNameArray: string[] = [];
+  let newFirstNameArray: string[] = [];
+  let newLastNameArray: string[] = [];
 
-      console.log("First Name Query:", firstNameQuery);
-      console.log("Last Name Query:", lastNameQuery);
-      console.log("Full Name Query:", fullNameQuery);
-
-      const firstNameResponse = await Chat_GPT_35_Chat(firstNameQuery);
-      const lastNameResponse = await Chat_GPT_35_Chat(lastNameQuery);
-      const fullNameResponse = await Chat_GPT_35_Chat(fullNameQuery);
-
-      console.log(
-        "First Name Response:",
-        getStringsInsideDoubleQuotes(firstNameResponse.MPT)
-      );
-      console.log(
-        "Last Name Response:",
-        getStringsInsideDoubleQuotes(lastNameResponse.MPT)
-      );
-      console.log(
-        "Full Name Response:",
-        getStringsInsideDoubleQuotes(fullNameResponse.MPT)
-      );
-
-      console.log("----------------------------------------------");
-
-      // console.log(
-      //   await Chat_GPT_35_Chat(await FullNameQuery(columnCells[cell]))
-      // );
-      // console.log(
-      //   await Chat_GPT_35_Conversation(await FirstNameQuery(columnCells[cell]))
-      // );
-      // console.log(
-      //   await Chat_GPT_35_Conversation(await LastNameQuery(columnCells[cell]))
-      // );
+  for (let i = 0; i <= 2; i++) {
+    const columnNameToFind = columnNames[i];
+    let columnCells: string[] = [];
+    try {
+      columnCells = await getCellsForColumn(filePath, columnNameToFind);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    for (let cell in columnCells) {
+      if (_.trim(columnCells[cell]) !== columnCells[0]) {
+        if (columnCells[0] === "Name") {
+          let query = await FullNameQuery(columnCells[cell]);
+          let response = await Chat_GPT_35_Chat(query);
+          let name = getStringsInsideDoubleQuotes(response.MPT);
+          newNameArray.push(name);
+        } else if (columnCells[0] === "First Name") {
+          let query = await FirstNameQuery(columnCells[cell]);
+          let response = await Chat_GPT_35_Chat(query);
+          let name = getStringsInsideDoubleQuotes(response.MPT);
+          newFirstNameArray.push(name);
+        } else if (columnCells[0] === "Last Name") {
+          let query = await LastNameQuery(columnCells[cell]);
+          let response = await Chat_GPT_35_Chat(query);
+          let name = getStringsInsideDoubleQuotes(response.MPT);
+          newLastNameArray.push(name);
+        }
+      }
     }
   }
+
+  console.log("New Name Array:", newNameArray);
+  console.log("New First Name Array:", newFirstNameArray);
+  console.log("New Last Name Array:", newLastNameArray);
 
   // console.log("Company Names:", companyNames);
   //----------------------------------------------

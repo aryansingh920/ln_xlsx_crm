@@ -1,4 +1,4 @@
-export function getStringsInsideDoubleQuotes(input: string): string[] {
+export function getStringsInsideDoubleQuotes(input: string): string {
   const regex = /"([^"]*)"/g;
   let match;
   const matches = [];
@@ -7,5 +7,5 @@ export function getStringsInsideDoubleQuotes(input: string): string[] {
     matches.push(match[1]);
   }
 
-  return matches;
+  return matches[0];
 }
