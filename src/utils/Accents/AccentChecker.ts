@@ -110,7 +110,7 @@ const formString = (strings: string): string => {
     }
     if (!checkedChar.isLetter) {
       if (checkedChar.char === " ") {
-        newWord = _.capitalize(newWord);
+        // newWord = _.capitalize(newWord);
         newString += newWord + " ";
         newWord = "";
       }

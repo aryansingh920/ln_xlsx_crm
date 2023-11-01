@@ -59,7 +59,10 @@ const Changes = async (req: Request, res: Response) => {
   //----------------------------------------------
   const filePath = outputFilePath;
 
-  // const columnNames = await getColumnNames(filePath);
+
+  const columnNames = await getColumnNames(filePath);
+
+  console.log("Column Names:", columnNames);
 
   // let newNameArray: string[] = [];
   // let newFirstNameArray: string[] = [];
