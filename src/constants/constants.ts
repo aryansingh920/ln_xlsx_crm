@@ -20,9 +20,22 @@ const Constants: {
     "Source",
     "Industry",
     "Assigned User",
+    // "Job",
+    // "Location",
+    // "Linkedin",
   ],
 };
 
+const PythonActions: {
+  UpdateColumnByName: string;
+  DeleteColumnByName: string;
+} = {
+  UpdateColumnByName: "updateColumnByName",
+  DeleteColumnByName: "deleteColumn",
+};
+
+// const pythonExecFile: string = path.join(__dirname, "python/main.py");
+const pythonExecFile: string = path.join(__dirname, "../../python/main.py");
 
 const FilePath: string = path.join(
   __dirname,
@@ -35,5 +48,5 @@ const OutputFilePath: string = path.join(
 );
 
 // Export the FilePath variable
-export { FilePath, Constants, OutputFilePath };
+export { FilePath, Constants, OutputFilePath, pythonExecFile, PythonActions };
 

@@ -14,6 +14,27 @@ class ExcelFile:
         """
         print(self.df)
 
+    def replace_column_values(self, column_name: str, new_values: list) -> None:
+        """
+        Replace the values in a specific column with new values provided in an array.
+
+        Args:
+            column_name (str): The name of the column to replace values in.
+            new_values (list): A list of new values to replace the column values.
+        """
+        new_values = new_values[1:]
+        if column_name in self.df.columns:
+            if len(new_values) == len(self.df):
+                self.df[column_name] = new_values
+                print(f"Replaced values in column '{column_name}'")
+            else:
+                print(
+                    "The number of new values must match the number of rows in the DataFrame.")
+        else:
+            print(f"Column '{column_name}' not found")
+
+
+
     def delete_column(self, column_name: str) -> None:
         """
         Delete a column from the DataFrame.

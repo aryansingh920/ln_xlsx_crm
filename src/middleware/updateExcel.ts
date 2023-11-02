@@ -1,50 +1,60 @@
-import e, { Request, Response } from "express";
+import { Request, Response } from "express";
 import {
   endsWithKeep,
   endsWithRemove,
 } from "../utils/QueryExtract/keepOrRemove";
 import { deleteColumn } from "../utils/ExcelManipulation/deleteColumn";
-import { Constants, FilePath, OutputFilePath } from "../constants/constants";
-// import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
-import { getCellsForColumn } from "../utils/ExcelManipulation/getCellsFromColumnNames";
-import {
-  Chat_GPT_35_Conversation,
-  Chat_GPT_35_Chat,
-  Chat_GPT,
-  Bard_Palm2,
-  Chat_Llama_2,
-  Question_Answer,
-} from "../utils/AIEngine";
-import {
-  FirstNameQuery,
-  LastNameQuery,
-  FullNameQuery,
-} from "../utils/QueryExtract/Name";
 import _ from "lodash";
-import { getStringsInsideDoubleQuotes } from "../utils/QueryExtract/StringInsideQuotes";
 import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
+import {
+  Constants,
+  FilePath,
+  OutputFilePath,
+  pythonExecFile,
+  PythonActions,
+} from "../constants/constants";
+import {
+  printCurrentDirectory,
+  deleteDirectory,
+  createDirectory,
+} from "../utils/FolderManipulation";
+import path from "path";
+import { getCellsForColumn } from "../utils/ExcelManipulation/getCellsFromColumnNames";
+import { formString } from "../utils/Accents/AccentChecker";
+import { updateColumnByName } from "../utils/ExcelManipulation/updateColumnByColumnNames";
+import { removeExtraSpaces } from "../utils/RemoveExtraSpace";
+import { extractNamesFullNameRE } from "../utils/QueryExtract/FullNameRE";
+//----------------------------------------------
+//----------------------------------------------
+//----------------------------------------------
+//----------------------------------------------
+//----------------------------------------------
+//----------------------------------------------
 
 const Changes = async (req: Request, res: Response) => {
+  await deleteDirectory(path.join(printCurrentDirectory(), "output"));
+  // Create a new uploads directory
+  await createDirectory(path.join(printCurrentDirectory(), "output"));
+
   let removeColumnArray: string[] = [];
   for (let key in req.body) {
     if (endsWithKeep(key)) {
-      //   console.log("Keep", key);
     }
     if (endsWithRemove(key)) {
-      //   console.log("Remove", key);
       removeColumnArray.push(req.body[key]);
     }
   }
+
   const inputFilePath = FilePath;
   const outputFilePath = OutputFilePath;
-  const sheetName = Constants.SheetName;
 
   // Delete Column
   //----------------------------------------------
   await deleteColumn(
+    pythonExecFile,
+    PythonActions.DeleteColumnByName,
     inputFilePath,
     outputFilePath,
-    sheetName,
     removeColumnArray
   )
     .then(() => {
@@ -59,53 +69,44 @@ const Changes = async (req: Request, res: Response) => {
   //----------------------------------------------
   const filePath = outputFilePath;
 
-
   const columnNames = await getColumnNames(filePath);
 
-  console.log("Column Names:", columnNames);
+  const excelFilePath = FilePath;
 
-  // let newNameArray: string[] = [];
-  // let newFirstNameArray: string[] = [];
-  // let newLastNameArray: string[] = [];
+  for (let i = 0; i < 3; i++) {
+    // To Update Column 1,2,3
 
-  // for (let i = 0; i <= 2; i++) {
-  //   const columnNameToFind = columnNames[i];
-  //   let columnCells: string[] = [];
-  //   try {
-  //     columnCells = await getCellsForColumn(filePath, columnNameToFind);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  //   for (let cell in columnCells) {
-  //     if (_.trim(columnCells[cell]) !== columnCells[0]) {
-  //       if (columnCells[0] === "Name") {
-  //         let query = await FullNameQuery(columnCells[cell]);
-  //         let response = await Chat_GPT_35_Chat(query);
-  //         let name = getStringsInsideDoubleQuotes(response.MPT);
-  //         newNameArray.push(name);
-  //       } else if (columnCells[0] === "First Name") {
-  //         let query = await FirstNameQuery(columnCells[cell]);
-  //         let response = await Chat_GPT_35_Chat(query);
-  //         let name = getStringsInsideDoubleQuotes(response.MPT);
-  //         newFirstNameArray.push(name);
-  //       } else if (columnCells[0] === "Last Name") {
-  //         let query = await LastNameQuery(columnCells[cell]);
-  //         let response = await Chat_GPT_35_Chat(query);
-  //         let name = getStringsInsideDoubleQuotes(response.MPT);
-  //         newLastNameArray.push(name);
-  //       }
-  //     }
-  //   }
-  // }
+    let getColumnCells = await getCellsForColumn(excelFilePath, columnNames[i]);
 
-  // console.log("New Name Array:", newNameArray);
-  // console.log("New First Name Array:", newFirstNameArray);
-  // console.log("New Last Name Array:", newLastNameArray);
+    const updateColumnCells: string[] = [];
 
-  // console.log("Company Names:", companyNames);
-  //----------------------------------------------
+    //removing extra spaces and accents here
+    for (const cell of getColumnCells) {
+      updateColumnCells.push(removeExtraSpaces(formString(cell)));
+    }
 
-  res.send(req.body);
+    const REChecker = extractNamesFullNameRE(updateColumnCells);
+    // console.log("REChecker", REChecker);
+
+    await updateColumnByName(
+      pythonExecFile,
+      PythonActions.UpdateColumnByName,
+      OutputFilePath,
+      OutputFilePath,
+      columnNames[i],
+      REChecker
+    );
+  }
+  const file = `${OutputFilePath}`;
+
+  res.download(file, Constants.FileName, function (err) {
+    if (err) {
+      // Handle error, but keep in mind the response may be partially-sent
+      // so check res.headersSent
+    } else {
+      // decrement a download credit, etc.
+    }
+  });
 };
 
 export default {

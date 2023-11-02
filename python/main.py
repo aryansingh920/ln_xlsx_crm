@@ -5,16 +5,10 @@ import sys
 
 
 def main():
-    # Check if the script is run with the expected number of arguments
-    # if len(sys.argv) != 3:
-    #     print("Usage: python main.py arg1 arg2")
-    #     return
-
-    # Access the command-line arguments
+    print("Python : main")
     FilePath = sys.argv[1]
     Action = sys.argv[2]
-    columns = sys.argv[3]
-    output_file_path = sys.argv[4]
+    output_file_path = sys.argv[3]
 
     # print(f"Argument 1: {FilePath}")
     # print(f"Argument 2: {Action}")
@@ -23,19 +17,39 @@ def main():
 
     excel_file = ExcelFile(FilePath)
     excel_file.display_details()
-    
-        # Your script logic here
 
+    if (Action == "deleteColumn"):
+        '''
+        [1] = FilePath
+        [2] = Action
+        [3] = output_file_path
+        [4] = ColumnName
+        '''
+        columns = sys.argv[4]
 
-
-
-    if(Action == "deleteColumn"):
-        # print("deleteColumn",columns)
         for col in columns.split(','):
             excel_file.delete_column(column_name=col)
-    excel_file.save_to_excel(output_file_path=output_file_path)
 
-        
+    if (Action == "updateColumnByName"):
+        '''
+        [1] = FilePath
+        [2] = Action
+        [3] = output_file_path
+        [4] = ColumnName
+        [5] = NewValuesList
+        '''
+        ColumnName = sys.argv[4]
+        NewValuesList = sys.argv[5]
+        print(f"Argument 4: {ColumnName}")
+        print(f"Argument 5: {NewValuesList}")
+        excel_file.replace_column_values(
+            column_name=ColumnName, new_values=NewValuesList.split(','))
+        # excel_file.replace_column_values(
+        #     column_name=ColumnName, new_values=NewValuesList)
+
+
+# ---------------------------------------------------------------------------------
+    excel_file.save_to_excel(output_file_path=output_file_path)
 
 
 if __name__ == "__main__":
@@ -43,13 +57,9 @@ if __name__ == "__main__":
     main()
 
 
-
-
-
-
 # if __name__ == "__main__":
 #     parent_directory = os.path.abspath(os.path.join(os.getcwd()))
-    
+
 #     # Call the select_excel_file function to get the selected file path
 #     file_path = select_excel_file()
 #     if not file_path:
@@ -79,11 +89,11 @@ if __name__ == "__main__":
 #             # Delete specified columns
 #             for col in column_name:
 #                 excel_file.delete_column(column_name=col)
-            
+
 #             # Delete specified rows
 #             for idx in row_index:
 #                 excel_file.delete_row(row_index=idx)
-            
+
 #             # Delete specified cells
 #             for cell in cell_details:
 #                 if "-" in cell:

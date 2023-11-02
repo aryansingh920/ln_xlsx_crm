@@ -11,15 +11,16 @@ import { Constants, FilePath } from "../constants/constants";
 import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
 import { getExcelFileDetails } from "../utils/ExcelManipulation/getExcelFileDetails";
 import _ from "lodash";
-import { getCellsForColumn } from "../utils/ExcelManipulation/getCellsFromColumnNames";
-import { formString } from "../utils/Accents/AccentChecker";
+//----------------------------------------------
+//----------------------------------------------
+//----------------------------------------------
+//----------------------------------------------
+//----------------------------------------------
+//----------------------------------------------
 
-function removeExtraSpaces(inputString: string): string {
-  return inputString.replace(/\s+/g, " ").trim();
-}
+
 
 const uploadFile_post = async (req: Request, res: Response) => {
-  // console.log("Path", printCurrentDirectory());
 
   // Delete the uploads directory
   await deleteDirectory(path.join(printCurrentDirectory(), "uploads"));
@@ -73,23 +74,12 @@ const uploadFile_post = async (req: Request, res: Response) => {
       const excelFileDetails = await getExcelFileDetails(excelFilePath);
       const columnNames = await getColumnNames(excelFilePath);
 
-      // console.log("Column Names:", columnNames);
-      const getColumnCells = await getCellsForColumn(
-        excelFilePath,
-        columnNames[0]
-      );
-      console.log("Excel File Details:", getColumnCells);
-      for (const cell of getColumnCells) {
-        console.log("Cell:", removeExtraSpaces(formString(cell)));
-      }
 
       let toKeepArray: string[] = [];
 
       columnNames.forEach((element) => {
-        // console.log(element);
-        // console.log(Constants.Columns_To_Keep);
+        console.log("yo",Constants.Columns_To_Keep.includes(element),element);
         if (Constants.Columns_To_Keep.includes(element)) {
-          // console.log(element);
           toKeepArray.push(element);
         }
       });

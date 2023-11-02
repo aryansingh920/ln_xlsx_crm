@@ -4,22 +4,31 @@ import { spawn } from "child_process";
 import _ from "lodash";
 
 async function deleteColumn(
+  pythonFilePath: string,
+  pythonActions: string,
   inputFilePath: string,
   outputFilePath: string,
-  sheetName: string,
   columnName: string[]
 ) {
   // console.log(inputFilePath, outputFilePath, sheetName, columnName);
-  const filePath = "python/main.py";
+  // console.log(
+  //   "Delete Column",
+  //   pythonFilePath,
+  //   pythonActions,
+  //   inputFilePath,
+  //   outputFilePath,
+  //   columnName
+  // );
+  const filePath = pythonFilePath;
   // console.log current directory
   // console.log("Remove column names ", columnName);
   // console.log("Current directory:", process.cwd());
 
   const args = [
-    inputFilePath,
-    "deleteColumn",
-    _.join(columnName, ","),
-    outputFilePath,
+    inputFilePath, //1
+    pythonActions, //2
+    outputFilePath, //3
+    _.join(columnName, ","), //4
   ]; // Replace with actual values
 
   // console.log("Args", args);
