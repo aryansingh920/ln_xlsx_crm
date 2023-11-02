@@ -78,7 +78,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
       let toKeepArray: string[] = [];
 
       columnNames.forEach((element) => {
-        console.log("yo",Constants.Columns_To_Keep.includes(element),element);
+        // console.log("yo",Constants.Columns_To_Keep.includes(element),element);
         if (Constants.Columns_To_Keep.includes(element)) {
           toKeepArray.push(element);
         }

@@ -4,7 +4,7 @@ import {
   endsWithRemove,
 } from "../utils/QueryExtract/keepOrRemove";
 import { deleteColumn } from "../utils/ExcelManipulation/deleteColumn";
-import _ from "lodash";
+import _, { forIn } from "lodash";
 import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
 import {
   Constants,
@@ -30,6 +30,35 @@ import { extractNamesFullNameRE } from "../utils/QueryExtract/FullNameRE";
 //----------------------------------------------
 //----------------------------------------------
 //----------------------------------------------
+
+function findIndexByStringMatch(arr: string[], target: string): number {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === target) {
+      return i; // Return the index of the matching element
+    }
+  }
+  return -1; // Return -1 if the element is not found in the array
+}
+
+function combineCompaniesAndEmails(
+  companies: string[],
+  emails: string[]
+): { [key: string]: string[] } {
+  const companyEmailsMap: { [key: string]: string[] } = {};
+
+  for (let i = 0; i < companies.length; i++) {
+    const company = companies[i];
+    const email = emails[i];
+
+    if (!companyEmailsMap[company]) {
+      companyEmailsMap[company] = [email];
+    } else {
+      companyEmailsMap[company].push(email);
+    }
+  }
+
+  return companyEmailsMap;
+}
 
 const Changes = async (req: Request, res: Response) => {
   await deleteDirectory(path.join(printCurrentDirectory(), "output"));
@@ -63,17 +92,23 @@ const Changes = async (req: Request, res: Response) => {
     .catch((error) => {
       console.error("Error:", error);
     });
+
+  //File Path
   //----------------------------------------------
+  const filePath = outputFilePath;
+  //Column Names
+  const columnNames = await getColumnNames(filePath);
+  //Excel File Path
+  const excelFilePath = FilePath;
 
   // Get Cells From Column Names
   //----------------------------------------------
-  const filePath = outputFilePath;
-
-  const columnNames = await getColumnNames(filePath);
-
-  const excelFilePath = FilePath;
-
-  for (let i = 0; i < 3; i++) {
+  // for (let i = 0; i < 3; i++) {
+  for (const i of [
+    findIndexByStringMatch(columnNames, "Name"),
+    findIndexByStringMatch(columnNames, "First Name"),
+    findIndexByStringMatch(columnNames, "Last Name"),
+  ]) {
     // To Update Column 1,2,3
 
     let getColumnCells = await getCellsForColumn(excelFilePath, columnNames[i]);
@@ -97,8 +132,26 @@ const Changes = async (req: Request, res: Response) => {
       REChecker
     );
   }
-  const file = `${OutputFilePath}`;
+  //Email Guessing and updating of email
+  //----------------------------------------------
 
+  let getColumnCellsEmails = await getCellsForColumn(
+    excelFilePath,
+    columnNames[findIndexByStringMatch(columnNames, "Emails")]
+  );
+  let getColumnCellsCompany = await getCellsForColumn(
+    excelFilePath,
+    columnNames[findIndexByStringMatch(columnNames, "Company")]
+  );
+
+  const companyEmailsObj = combineCompaniesAndEmails(
+    getColumnCellsCompany,
+    getColumnCellsEmails
+  );
+
+  console.log("getColumnCells", companyEmailsObj);
+
+  const file = `${OutputFilePath}`;
   res.download(file, Constants.FileName, function (err) {
     if (err) {
       // Handle error, but keep in mind the response may be partially-sent
