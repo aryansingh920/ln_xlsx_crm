@@ -4,10 +4,9 @@ import {
   endsWithRemove,
 } from "../utils/QueryExtract/keepOrRemove";
 import { deleteColumn } from "../utils/ExcelManipulation/deleteColumn";
-import _, { forIn } from "lodash";
+import _ from "lodash";
 import { getColumnNames } from "../utils/ExcelManipulation/getColumnNames";
 import {
-  Constants,
   FilePath,
   OutputFilePath,
   pythonExecFile,
@@ -17,48 +16,27 @@ import {
   printCurrentDirectory,
   deleteDirectory,
   createDirectory,
-} from "../utils/FolderManipulation";
+} from "../utils/UpdateExcel/FolderManipulation";
 import path from "path";
 import { getCellsForColumn } from "../utils/ExcelManipulation/getCellsFromColumnNames";
 import { formString } from "../utils/Accents/AccentChecker";
 import { updateColumnByName } from "../utils/ExcelManipulation/updateColumnByColumnNames";
-import { removeExtraSpaces } from "../utils/RemoveExtraSpace";
+import { removeExtraSpaces } from "../utils/UpdateExcel/RemoveExtraSpace";
 import { extractNamesFullNameRE } from "../utils/QueryExtract/FullNameRE";
+import { findIndexByStringMatch } from "../utils/UpdateExcel/findIndexByStringMatch";
+import { flattenAndOrganize } from "../utils/UpdateExcel/flattenObjects";
+import { cleanAndFilterEmails } from "../utils/UpdateExcel/cleanAndFilterObjects";
+import {
+  generateNewObject,
+  Employee,
+  CompanyData,
+} from "../utils/UpdateExcel/EmailMap";
 //----------------------------------------------
 //----------------------------------------------
 //----------------------------------------------
 //----------------------------------------------
 //----------------------------------------------
 //----------------------------------------------
-
-function findIndexByStringMatch(arr: string[], target: string): number {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === target) {
-      return i; // Return the index of the matching element
-    }
-  }
-  return -1; // Return -1 if the element is not found in the array
-}
-
-function combineCompaniesAndEmails(
-  companies: string[],
-  emails: string[]
-): { [key: string]: string[] } {
-  const companyEmailsMap: { [key: string]: string[] } = {};
-
-  for (let i = 0; i < companies.length; i++) {
-    const company = companies[i];
-    const email = emails[i];
-
-    if (!companyEmailsMap[company]) {
-      companyEmailsMap[company] = [email];
-    } else {
-      companyEmailsMap[company].push(email);
-    }
-  }
-
-  return companyEmailsMap;
-}
 
 const Changes = async (req: Request, res: Response) => {
   await deleteDirectory(path.join(printCurrentDirectory(), "output"));
@@ -136,30 +114,49 @@ const Changes = async (req: Request, res: Response) => {
   //----------------------------------------------
 
   let getColumnCellsEmails = await getCellsForColumn(
-    excelFilePath,
+    outputFilePath,
     columnNames[findIndexByStringMatch(columnNames, "Emails")]
   );
   let getColumnCellsCompany = await getCellsForColumn(
-    excelFilePath,
+    outputFilePath,
     columnNames[findIndexByStringMatch(columnNames, "Company")]
   );
-
-  const companyEmailsObj = combineCompaniesAndEmails(
-    getColumnCellsCompany,
-    getColumnCellsEmails
+  let getColumnCellsName = await getCellsForColumn(
+    outputFilePath,
+    columnNames[findIndexByStringMatch(columnNames, "Name")]
+  );
+  let getColumnCellsFirstName = await getCellsForColumn(
+    outputFilePath,
+    columnNames[findIndexByStringMatch(columnNames, "First Name")]
+  );
+  let getColumnCellsLastName = await getCellsForColumn(
+    outputFilePath,
+    columnNames[findIndexByStringMatch(columnNames, "Last Name")]
   );
 
-  console.log("getColumnCells", companyEmailsObj);
+  //start array from 1 array[1:]
 
+  const flattenObjects: CompanyData = await flattenAndOrganize(
+    getColumnCellsCompany.slice(1),
+    getColumnCellsName.slice(1),
+    getColumnCellsFirstName.slice(1),
+    getColumnCellsLastName.slice(1),
+    getColumnCellsEmails.slice(1)
+  );
+  const EmailClearing: CompanyData = generateNewObject(flattenObjects);
+  console.log("EmailClearing", EmailClearing);
+
+  // ----------------------------------------------------------------------
   const file = `${OutputFilePath}`;
-  res.download(file, Constants.FileName, function (err) {
-    if (err) {
-      // Handle error, but keep in mind the response may be partially-sent
-      // so check res.headersSent
-    } else {
-      // decrement a download credit, etc.
-    }
-  });
+  res.json(EmailClearing);
+  // res.download(file, Constants.FileName, function (err) {
+  //   if (err) {
+  //     // Handle error, but keep in mind the response may be partially-sent
+  //     // so check res.headersSent
+  //   } else {
+  //     // decrement a download credit, etc.
+  //   }
+  // });
 };
 
 export default {
