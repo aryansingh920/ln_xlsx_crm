@@ -7,11 +7,10 @@ WORKDIR /app
 # Copy your application files to the container
 COPY . /app
 
-# Install Python and pip
+# Install Python, pip, and other dependencies
 RUN apt-get update && apt-get install -y python3 python3-pip
-
-# Install Python dependencies
-RUN pip install -r requirements.txt
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
 
 # Expose the port that your application will listen on
 EXPOSE 3000
