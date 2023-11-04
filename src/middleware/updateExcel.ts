@@ -292,15 +292,15 @@ const Changes = async (req: Request, res: Response) => {
 
   // ----------------------------------------------------------------------
   const file = `${OutputFilePath}`;
-  res.json(EmailClearing);
-  // res.download(file, Constants.FileName, function (err) {
-  //   if (err) {
-  //     // Handle error, but keep in mind the response may be partially-sent
-  //     // so check res.headersSent
-  //   } else {
-  //     // decrement a download credit, etc.
-  //   }
-  // });
+  // res.json(EmailClearing);
+  res.download(file, Constants.FileName, function (err) {
+    if (err) {
+      // Handle error, but keep in mind the response may be partially-sent
+      // so check res.headersSent
+    } else {
+      // decrement a download credit, etc.
+    }
+  });
 };
 
 export default {
