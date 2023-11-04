@@ -244,7 +244,7 @@ const Changes = async (req: Request, res: Response) => {
   //replacing in the excel sheet after response
   const EmailNameObjectValues: string[] = Object.values(EmailNameObject);
   // add Email keyword at 0th index of above array
-  EmailNameObjectValues.unshift("Email");
+  EmailNameObjectValues.unshift("Emails");
 
   await updateColumnByName(
     pythonExecFile,
@@ -279,6 +279,14 @@ const Changes = async (req: Request, res: Response) => {
     OutputFilePath,
     "Phones",
     "Phone"
+  );
+  await updateColumnName(
+    pythonExecFile,
+    PythonActions.UpdateColumnName,
+    OutputFilePath,
+    OutputFilePath,
+    "Emails",
+    "Email"
   );
   // console.log("EmailNameObject", EmailNameObject);
 
