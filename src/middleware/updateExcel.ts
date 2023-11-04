@@ -38,7 +38,7 @@ import {
 } from "../utils/QueryExtract/Email";
 import { Chat_GPT_35_Conversation, GPTInterface } from "../utils/AIEngine";
 import { getRandomElement } from "../utils/RandomElement";
-
+import { updateColumnName } from "../utils/ExcelManipulation/updateColumnName";
 //----------------------------------------------
 //----------------------------------------------
 //----------------------------------------------
@@ -253,6 +253,32 @@ const Changes = async (req: Request, res: Response) => {
     OutputFilePath,
     columnNames[findIndexByStringMatch(columnNames, "Emails")],
     EmailNameObjectValues
+  );
+
+  console.log("Updating Column Names");
+  await updateColumnName(
+    pythonExecFile,
+    PythonActions.UpdateColumnName,
+    OutputFilePath,
+    OutputFilePath,
+    "Location",
+    "Country"
+  );
+  await updateColumnName(
+    pythonExecFile,
+    PythonActions.UpdateColumnName,
+    OutputFilePath,
+    OutputFilePath,
+    "Job",
+    "Title"
+  );
+  await updateColumnName(
+    pythonExecFile,
+    PythonActions.UpdateColumnName,
+    OutputFilePath,
+    OutputFilePath,
+    "Phones",
+    "Phone"
   );
   // console.log("EmailNameObject", EmailNameObject);
 

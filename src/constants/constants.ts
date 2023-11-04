@@ -29,9 +29,11 @@ const Constants: {
 const PythonActions: {
   UpdateColumnByName: string;
   DeleteColumnByName: string;
+  UpdateColumnName: string;
 } = {
   UpdateColumnByName: "updateColumnByName",
   DeleteColumnByName: "deleteColumn",
+  UpdateColumnName: "updateColumnName",
 };
 
 // const pythonExecFile: string = path.join(__dirname, "python/main.py");

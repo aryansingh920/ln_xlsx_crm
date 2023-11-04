@@ -18,6 +18,22 @@ def main():
     excel_file = ExcelFile(FilePath)
     excel_file.display_details()
 
+    if (Action == "updateColumnName"):
+        '''
+        [1] = FilePath
+        [2] = Action
+        [3] = output_file_path
+        [4] = ColumnName
+        [5] = NewColumnName
+        '''
+        ColumnName = sys.argv[4]
+        NewColumnName = sys.argv[5]
+        print(f"Argument 4: {ColumnName}")
+        print(f"Argument 5: {NewColumnName}")
+        excel_file.update_column_name(old_column_name=ColumnName,
+                                 new_column_name=NewColumnName)
+        
+
     if (Action == "deleteColumn"):
         '''
         [1] = FilePath

@@ -109,6 +109,19 @@ class ExcelFile:
             print(f"Cell at row {row_index} and column {column_name} not found")
 
 
+    def update_column_name(self, old_column_name: str, new_column_name: str) -> None:
+        """
+        Update the name of a column.
+
+        Args:
+            old_column_name (str): The current name of the column.
+            new_column_name (str): The new name for the column.
+        """
+        if old_column_name in self.df.columns:
+            self.df = self.df.rename(columns={old_column_name: new_column_name})
+            print(f"Updated column name from '{old_column_name}' to '{new_column_name}'")
+
+
     def save_to_excel(self, output_file_path: str) -> None:
         """
         Save the modified DataFrame to a new Excel file.

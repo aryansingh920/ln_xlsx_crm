@@ -1,37 +1,50 @@
-import * as ExcelJS from "exceljs";
-import * as fs from "fs";
+import { spawn } from "child_process";
+import _ from "lodash";
 
-async function updateColumnNames(
+async function updateColumnName(
+  pythonFilePath: string,
+  pythonActions: string,
   inputFilePath: string,
   outputFilePath: string,
-  newColumnNames: string[]
-): Promise<void> {
-  const workbook = new ExcelJS.Workbook();
+  columnName: string,
+  updateColumnName: string
+) {
+  const filePath = pythonFilePath;
 
-  try {
-    // Load the existing Excel file
-    await workbook.xlsx.readFile(inputFilePath);
+  const args = [
+    inputFilePath, //1
+    pythonActions, //2
+    outputFilePath, //3
+    columnName, //4
+    updateColumnName, //5
+  ]; // Replace with actual values
 
-    // Assuming you want to update the first worksheet (index 1)
-    const worksheet = workbook.getWorksheet(1);
+  // console.log("Args", args);
+  const pythonProcess = spawn("python", [filePath, ...args]);
 
-    // Update the column names
-    for (let i = 1; i <= newColumnNames.length; i++) {
-      worksheet.getCell(1, i).value = newColumnNames[i - 1];
-    }
+  pythonProcess.stdout.on("data", (data) => {
+    console.log(`Python Script Output: ${data}`);
+  });
 
-    // Save the updated workbook to a new file
-    await workbook.xlsx.writeFile(outputFilePath);
+  pythonProcess.stderr.on("data", (data) => {
+    console.error(`Error in Python Script: ${data}`);
+  });
 
-    console.log(`Column names updated and saved to ${outputFilePath}`);
-  } catch (error) {
-    console.error("Error:", error);
-  }
+  const code = await new Promise<number>((resolve, reject) => {
+    pythonProcess.on("close", (code: number | null) => {
+      if (code === null) {
+        reject(new Error("Python script exited with a null code."));
+      } else {
+        console.log(`Python Script Exited with Code: ${code}`);
+        resolve(code);
+      }
+    });
+
+    pythonProcess.on("error", (error) => {
+      console.error(`Error starting Python Script: ${error.message}`);
+      reject(error);
+    });
+  });
 }
 
-// Usage example
-const inputFilePath = "input.xlsx"; // Replace with your input file path
-const outputFilePath = "output.xlsx"; // Replace with the desired output file path
-const newColumnNames = ["NewColumn1", "NewColumn2", "NewColumn3"]; // Replace with your new column names
-
-updateColumnNames(inputFilePath, outputFilePath, newColumnNames);
+export { updateColumnName };
