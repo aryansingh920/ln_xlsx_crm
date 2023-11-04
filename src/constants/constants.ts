@@ -20,8 +20,8 @@ const Constants: {
     "Source",
     "Industry",
     "Assigned User",
-    // "Job",
-    // "Location",
+    "Job",
+    "Location",
     // "Linkedin",
   ],
 };

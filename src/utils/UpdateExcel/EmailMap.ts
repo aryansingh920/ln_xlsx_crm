@@ -18,8 +18,8 @@ export function generateNewObject(input: CompanyData): CompanyData {
     for (const employee of input[companyName]) {
       const emailKeywords = companyName
         .toLowerCase()
-        .replace(/[^a-z]+/g, "")
-        .split("");
+        .replace(/[^a-z]+/g, " ")
+        .split(" ");
 
       if (Array.isArray(employee.Email)) {
         const matchingEmails = employee.Email.filter((email) => {
@@ -66,6 +66,44 @@ export function generateNewObject(input: CompanyData): CompanyData {
       result[companyName] = employees;
     }
   }
+
+  return result;
+}
+
+export function filterEmployeesWithEmail(
+  input: CompanyData,
+  companyName: string
+): CompanyData {
+  const result: CompanyData = {};
+
+  if (input.hasOwnProperty(companyName)) {
+    result[companyName] = input[companyName].filter(
+      (employee) =>
+        employee.Email !== "" &&
+        employee.Email !== undefined &&
+        employee.Email !== null
+    );
+  }
+
+  return result;
+}
+
+export function filterEmployeesWithOutEmail(
+  input: CompanyData,
+  companyName: string
+): CompanyData {
+  const result: CompanyData = {};
+
+  // for (const companyName in input) {
+  if (input.hasOwnProperty(companyName)) {
+    result[companyName] = input[companyName].filter(
+      (employee) =>
+        employee.Email === "" ||
+        employee.Email === undefined ||
+        employee.Email === null
+    );
+  }
+  // }
 
   return result;
 }

@@ -3,6 +3,11 @@ import axios from "axios";
 
 const openaiClient = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+export interface GPTInterface {
+  MPT: string;
+  servercode: number;
+}
+
 export async function open_AI(text: string): Promise<string> {
   try {
     const response = await openaiClient.completions.create({
@@ -143,12 +148,9 @@ export async function Chat_GPT(query: String): Promise<void> {
   }
 }
 
-interface ResponseType {
-  MPT: string;
-  servercode: number;
-}
-
-export async function Chat_GPT_35_Conversation(query: String): Promise<void> {
+export async function Chat_GPT_35_Conversation(
+  query: String
+): Promise<GPTInterface> {
   const options = {
     method: "POST",
     url: "https://open-ai21.p.rapidapi.com/conversationmpt",
@@ -169,8 +171,10 @@ export async function Chat_GPT_35_Conversation(query: String): Promise<void> {
   };
 
   try {
+    console.log("AI Called");
     const response = await axios.request(options);
     // console.log(response.data);
+    console.log("AI gave response");
     return response.data;
   } catch (error) {
     console.error(error);
@@ -178,7 +182,7 @@ export async function Chat_GPT_35_Conversation(query: String): Promise<void> {
   }
 }
 
-export async function Chat_GPT_35_Chat(query: String): Promise<ResponseType> {
+export async function Chat_GPT_35_Chat(query: String): Promise<GPTInterface> {
   const options = {
     method: "POST",
     url: "https://open-ai21.p.rapidapi.com/chatmpt",
@@ -192,7 +196,7 @@ export async function Chat_GPT_35_Chat(query: String): Promise<ResponseType> {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);

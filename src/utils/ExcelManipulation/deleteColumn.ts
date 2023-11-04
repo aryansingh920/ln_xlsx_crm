@@ -10,28 +10,16 @@ async function deleteColumn(
   outputFilePath: string,
   columnName: string[]
 ) {
-  // console.log(inputFilePath, outputFilePath, sheetName, columnName);
-  // console.log(
-  //   "Delete Column",
-  //   pythonFilePath,
-  //   pythonActions,
-  //   inputFilePath,
-  //   outputFilePath,
-  //   columnName
-  // );
+
   const filePath = pythonFilePath;
-  // console.log current directory
-  // console.log("Remove column names ", columnName);
-  // console.log("Current directory:", process.cwd());
 
   const args = [
     inputFilePath, //1
     pythonActions, //2
     outputFilePath, //3
     _.join(columnName, ","), //4
-  ]; // Replace with actual values
+  ];
 
-  // console.log("Args", args);
   const pythonProcess = spawn("python", [filePath, ...args]);
 
   pythonProcess.stdout.on("data", (data) => {
@@ -58,44 +46,7 @@ async function deleteColumn(
     });
   });
 
-  // if (code === 0) {
-  //   // Load the workbook
-  //   const workbook = new ExcelJS.Workbook();
-  //   await workbook.xlsx.readFile(inputFilePath);
 
-  //   // Get the worksheet by name and assert that it's not null or undefined
-  //   const worksheet = workbook.getWorksheet(sheetName);
-
-  //   if (!worksheet) {
-  //     throw new Error(`Sheet "${sheetName}" not found in the workbook.`);
-  //   }
-
-  //   // Find the column by name
-  //   let columnIndex = -1;
-
-  //   worksheet.getRow(1).eachCell({ includeEmpty: true }, (cell, colNumber) => {
-  //     if (cell.value === columnName) {
-  //       columnIndex = colNumber;
-  //     }
-  //   });
-
-  //   console.log("Column Index", columnIndex);
-
-  //   if (columnIndex >= 1) {
-  //     // Remove the specified column
-  //     worksheet.columns.splice(columnIndex - 1, 1);
-
-  //     // Save the modified workbook to a new file
-  //     await workbook.xlsx.writeFile(outputFilePath);
-  //     console.log(`Column "${columnName}" deleted successfully.`);
-  //   } else {
-  //     throw new Error(
-  //       `Column "${columnName}" not found in sheet "${sheetName}".`
-  //     );
-  //   }
-  // } else {
-  //   console.error("Python script exited with a non-zero code.");
-  // }
 }
 
 export { deleteColumn };
