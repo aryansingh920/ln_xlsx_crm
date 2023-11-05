@@ -12,6 +12,7 @@ import {
   OutputFilePath,
   pythonExecFile,
   PythonActions,
+  Constants,
 } from "../constants/constants";
 import {
   printCurrentDirectory,
@@ -235,7 +236,7 @@ const Changes = async (req: Request, res: Response) => {
       const query = `${randomElementQuery} and ${randomElementQuery2} so ${getEmailQuery} just give the email and no conversational text required no extra punctuation needed`;
       const gpt_Response: GPTInterface = await Chat_GPT_35_Conversation(query);
       const emailExtract = extractEmail(gpt_Response.MPT);
-      EmailNameObject[employee.Name] = emailExtract || "";
+      EmailNameObject[employee.Name] = _.toLower(emailExtract!) || "";
     }
 
     console.log("----------------------------------------------------------");

@@ -9,8 +9,18 @@ COPY . /app
 
 # Install Python, pip, and other dependencies
 RUN apt-get update && apt-get install -y python3 python3-pip
-RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt
+
+# Copy requirements.txt from a different directory into the container
+COPY script/requirements.txt /app/ 
+
+# Install Python dependencies from requirements.txt
+RUN pip3 install --upgrade pip && pip3 install -r requirements.txt
+
+# Copy the sass.unix.sh script to the container
+COPY script/sassunix.sh /app/script/sass.sh
+
+# Make the script executable
+RUN chmod +x /app/script/sass.sh
 
 # Expose the port that your application will listen on
 EXPOSE 3000
@@ -28,8 +38,8 @@ ENV ZERO_BOUNCE_API_KEY_VALUE ""
 RUN rm -rf node_modules
 RUN npm ci
 
-# Compile SCSS to CSS
-RUN bash sass.sh
+# Compile SCSS to CSS using the sass.unix.sh script
+RUN /app/script/sass.sh
 
 # Start your application
 CMD ["npm", "start"]
