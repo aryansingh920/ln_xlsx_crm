@@ -17,4 +17,4 @@ done
 docker build -t excel-manipulator .
 
 # Run the Docker container with the volume mount option
-docker run -p 3000:3000 -d -v "$volume_path":/app/output excel-manipulator
+docker run -p 3005:3005 -d -v "$volume_path":/app/output excel-manipulator
