@@ -23,16 +23,19 @@ COPY script/sassunix.sh /app/script/sass.sh
 RUN chmod +x /app/script/sass.sh
 
 # Expose the port that your application will listen on
-EXPOSE 3000
+EXPOSE 3005
 
 # Define environment variables
-ENV PORT 3000
+ENV PORT 3005
 ENV OPENAI_API_KEY ""
 ENV BARD_1PSID_cookie_value ""
 ENV BARD_1PSIDTS_cookie_value ""
 ENV BARD_1PSIDCC_cookie_value ""
 ENV RAPID_API_KEY_VALUE "4749eed77fmsh282e13aab241c01p1c733djsn8a439686b347"
 ENV ZERO_BOUNCE_API_KEY_VALUE ""
+
+# Define the volume mount point for storing output files
+VOLUME /app/output
 
 # Install Node.js dependencies
 RUN rm -rf node_modules
