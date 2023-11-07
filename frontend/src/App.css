@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+/* styles.css */
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.uk-card {
+  /* Your additional card styles go here */
+}
+
+.js-upload {
+  text-align: center;
+}
