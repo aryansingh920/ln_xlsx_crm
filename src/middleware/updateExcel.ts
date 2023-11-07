@@ -87,13 +87,15 @@ const Changes = async (req: Request, res: Response) => {
   await createDirectory(path.join(printCurrentDirectory(), "output"));
 
   let removeColumnArray: string[] = [];
-  for (let key in req.body) {
-    if (endsWithKeep(key)) {
-    }
-    if (endsWithRemove(key)) {
-      removeColumnArray.push(req.body[key]);
-    }
-  }
+  removeColumnArray = [...req.body.removeColumnArray];
+  // console.log("removeColumnArray", removeColumnArray);
+  // for (let key in req.body) {
+  //   if (endsWithKeep(key)) {
+  //   }
+  //   if (endsWithRemove(key)) {
+  //     removeColumnArray.push(req.body[key]);
+  //   }
+  // }
 
   const inputFilePath = FilePath;
   const outputFilePath = OutputFilePath;

@@ -76,7 +76,6 @@ const uploadFile_post = async (req: Request, res: Response) => {
       const excelFileDetails = await getExcelFileDetails(excelFilePath);
       const columnNames = await getColumnNames(excelFilePath);
 
-
       let toKeepArray: string[] = [];
 
       columnNames.forEach((element) => {
@@ -88,9 +87,16 @@ const uploadFile_post = async (req: Request, res: Response) => {
 
       // console.log("File Details:", excelFileDetails);
 
-      res.status(200).render("success", {
-        msg: `Excel file saved as '${Constants.FileName}'`,
-        excelFileDetails: excelFileDetails,
+      // res.status(200).render("success", {
+      //   msg: `Excel file saved as '${Constants.FileName}'`,
+      //   excelFileDetails: excelFileDetails,
+      //   toKeepArray: toKeepArray,
+      //   columnNames: columnNames,
+      // });
+
+      res.status(200).json({
+        status: "success",
+        // excelFileDetails: excelFileDetails,
         toKeepArray: toKeepArray,
         columnNames: columnNames,
       });
