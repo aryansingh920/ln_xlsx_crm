@@ -4,8 +4,8 @@ FROM node:16.14.2
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy your application files to the container
-COPY . /app
+# Create directories for upload and output
+RUN mkdir upload output
 
 # Install Python, pip, and other dependencies
 RUN apt-get update && apt-get install -y python3 python3-pip
@@ -34,12 +34,9 @@ ENV BARD_1PSIDCC_cookie_value ""
 ENV RAPID_API_KEY_VALUE "4749eed77fmsh282e13aab241c01p1c733djsn8a439686b347"
 ENV ZERO_BOUNCE_API_KEY_VALUE ""
 
-# Define the volume mount point for storing output files
-VOLUME /app/output
-
 # Install Node.js dependencies
 RUN rm -rf node_modules
-RUN npm ci
+RUN npm i
 
 # Compile SCSS to CSS using the sass.unix.sh script
 RUN /app/script/sass.sh
