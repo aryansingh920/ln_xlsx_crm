@@ -1,41 +1,65 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-import Axios from "./api/axios";
+import SuccessAlert from "./components/SuccessAlert";
+import ErrorAlert from "./components/ErrorAlert";
+import Card from "./components/Card";
+import Spinner from "./components/Spinner";
+import { getHomeData } from "./api/home";
+import { set } from "lodash";
 
-const InternalCSS = {
-  displayNone: {
-    display: "none",
-  },
-};
+function App(): JSX.Element {
+  const [stages, setStages] = useState<{ [key: number]: boolean }>({
+    1: true, // Stage 1 is the default stage where the user can upload a file
+    2: false, // Stage 2 is the stage where the user can update the file and download the file
+    3: false,
+    4: false,
+  });
 
-function App() {
-  // const get = async () => {
-  //   const res = await Axios.get("/");
-  //   console.log(res);
-  // };
-  // get();
+  const [serverRunning, setServerRunning] = useState<boolean>(false);
+  const [showLoader, setShowLoader] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetchHomeData(setServerRunning);
+  }, []);
+
   return (
-    <div className="App">
-      <div>
-        <div className="uk-card uk-card-large uk-card-default uk-card-hover uk-card-body">
-          <h3 className="uk-card-title">Excel Tool</h3>
-          <div className="js-upload uk-placeholder uk-text-center">
-            <span uk-icon="icon: cloud-upload"></span>
-            <span className="uk-text-middle">
-              Attach binaries by dropping them here or
-            </span>
-            <div uk-form-custom>
-              <label style={InternalCSS.displayNone} htmlFor="formInput">
-                Input
-              </label>
-              <input id="formInput" type="file" title="" />
-              <span className="uk-link">selecting one</span>
-            </div>
-          </div>
-        </div>
+    <>
+      <div className="App">
+        {showLoader ? (
+          <Spinner />
+        ) : (
+          <Card
+            setStages={setStages}
+            setShowLoader={setShowLoader}
+            stages={stages}
+          />
+        )}
       </div>
-    </div>
+      {alertBox(serverRunning)}
+    </>
   );
 }
+
+const fetchHomeData = async (setServerRunning: any) => {
+  const data = await getHomeData();
+  if (data) {
+    setServerRunning(true);
+  }
+};
+
+const alertBox = (serverRunning: boolean): JSX.Element => {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: "0",
+        right: "0",
+        padding: "20px",
+      }}
+    >
+      {serverRunning ? <SuccessAlert /> : <ErrorAlert />}
+    </div>
+  );
+};
 
 export default App;

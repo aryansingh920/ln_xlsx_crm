@@ -99,6 +99,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
         // excelFileDetails: excelFileDetails,
         toKeepArray: toKeepArray,
         columnNames: columnNames,
+        toRemoveArray: _.difference(columnNames, toKeepArray),
       });
     })
     .catch((error) => {

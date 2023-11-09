@@ -236,9 +236,10 @@ const Changes = async (req: Request, res: Response) => {
         companyName
       );
       const query = `${randomElementQuery} and ${randomElementQuery2} so ${getEmailQuery} just give the email and no conversational text required no extra punctuation needed`;
-      const gpt_Response: GPTInterface = await Chat_GPT_35_Conversation(query);
-      const emailExtract = extractEmail(gpt_Response.MPT);
-      EmailNameObject[employee.Name] = _.toLower(emailExtract!) || "";
+      // const gpt_Response: GPTInterface = await Chat_GPT_35_Conversation(query);
+      // const emailExtract = extractEmail(gpt_Response.MPT);
+      // EmailNameObject[employee.Name] = _.toLower(emailExtract!) || "";
+      EmailNameObject[employee.Name] = "";
     }
 
     console.log("----------------------------------------------------------");
