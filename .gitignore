@@ -26,3 +26,5 @@
 /frontend/.yarn-integrity
 /frontend/.yarnrc.yml
 /frontend/.yarnignore
+/package-lock.json
+/package.json
