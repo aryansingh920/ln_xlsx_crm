@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 
 const home_get = (req: Request, res: Response) => {
-  // res.render("home");
-  res.status(200).json({ status: "Server is running" });
+  try {
+    res.status(200).json({ status: "Server is running" });
+  } catch (err) {
+    res.status(500).json({ status: "Server is not running", error: err });
+  }
 };
 
 export default { home_get };
