@@ -28,3 +28,4 @@
 /frontend/.yarnignore
 /package-lock.json
 /package.json
+/.hintrc
