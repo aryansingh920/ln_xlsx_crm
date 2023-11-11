@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Card1 from "./Cards/Card1";
 import Card2 from "./Cards/Card2";
+import Card3 from "./Cards/Card3";
 import { handleUpload } from "../service/Card/handleUpload";
-import { updateFile } from "../api/updateFile";
 
 const Card = (props: {
   stages: { [key: number]: boolean };
@@ -11,7 +11,6 @@ const Card = (props: {
 }): JSX.Element => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string>("");
-  const [toRemoveArray, setToRemoveArray] = useState<string[]>([]);
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -20,36 +19,16 @@ const Card = (props: {
     setSelectedFile(file);
   };
 
-  useEffect(() => {
-    // console.log("Stages", props.stages);
-  }, [props.stages]);
+  useEffect(() => {}, [props.stages]);
 
-  // useEffect(() => {
-  //   // Whenever toRemoveArray changes, this code will execute
-  //   if (toRemoveArray.length > 0) {
-  //     updateFile(toRemoveArray)
-  //       .then((res) => {
-  //         console.log("updateFile response:", res);
-  //       })
-  //       .catch((err) => {
-  //         console.error("updateFile error:", err);
-  //       });
-  //   }
-  // }, [toRemoveArray]);
-
-  //api calls
   const handleSubmit = async () => {
     props.setShowLoader(true);
-    await handleUpload(
-      selectedFile,
-      props.setStages,
-      setError,
-      setToRemoveArray
-    )
+    await handleUpload(selectedFile, props.setStages, setError)
       .then((res) => {
         console.log("res", res);
       })
       .catch((err) => {
+        props.setStages({ 1: false, 2: false, 3: true });
         console.log("err", err);
       });
     props.setShowLoader(false);
@@ -66,6 +45,7 @@ const Card = (props: {
         />
       )}
       {props.stages[2] && <Card2 />}
+      {props.stages[3] && <Card3 />}
     </>
   );
 };
