@@ -5,6 +5,7 @@ import ErrorAlert from "./components/ErrorAlert";
 import Card from "./components/Card";
 import Spinner from "./components/Spinner";
 import { getHomeData } from "./api/home";
+import Navbar from "./components/Navbar";
 
 function App(): JSX.Element {
   const [stages, setStages] = useState<{ [key: number]: boolean }>({
@@ -48,16 +49,19 @@ const fetchHomeData = async (setServerRunning: any) => {
 
 const alertBox = (serverRunning: boolean): JSX.Element => {
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "0",
-        right: "0",
-        padding: "20px",
-      }}
-    >
-      {serverRunning ? <SuccessAlert /> : <ErrorAlert />}
-    </div>
+    <>
+      <Navbar />
+      <div
+        style={{
+          position: "fixed",
+          bottom: "0",
+          right: "0",
+          padding: "20px",
+        }}
+      >
+        {serverRunning ? <SuccessAlert /> : <ErrorAlert />}
+      </div>
+    </>
   );
 };
 

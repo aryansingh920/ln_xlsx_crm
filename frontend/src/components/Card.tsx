@@ -11,7 +11,7 @@ const Card = (props: {
 }): JSX.Element => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string>("");
-  const [toRemoveArray, setToRemoveArray] = useState<[string]>([""]);
+  const [toRemoveArray, setToRemoveArray] = useState<string[]>([]);
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -23,6 +23,19 @@ const Card = (props: {
   useEffect(() => {
     // console.log("Stages", props.stages);
   }, [props.stages]);
+
+  // useEffect(() => {
+  //   // Whenever toRemoveArray changes, this code will execute
+  //   if (toRemoveArray.length > 0) {
+  //     updateFile(toRemoveArray)
+  //       .then((res) => {
+  //         console.log("updateFile response:", res);
+  //       })
+  //       .catch((err) => {
+  //         console.error("updateFile error:", err);
+  //       });
+  //   }
+  // }, [toRemoveArray]);
 
   //api calls
   const handleSubmit = async () => {
@@ -39,15 +52,6 @@ const Card = (props: {
       .catch((err) => {
         console.log("err", err);
       });
-
-    if (toRemoveArray)
-      await updateFile(toRemoveArray)
-        .then((res) => {
-          console.log("res", res);
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
     props.setShowLoader(false);
   };
 

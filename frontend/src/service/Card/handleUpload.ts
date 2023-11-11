@@ -1,16 +1,27 @@
 //api calls
 import { uploadFile } from "../../api/uploadFile";
+import { updateFile } from "../../api/updateFile";
 export const handleUpload = async (
   selectedFile: File | null,
   setStages: React.Dispatch<React.SetStateAction<{ [key: number]: boolean }>>,
   setError: React.Dispatch<React.SetStateAction<string>>,
-  setToRemoveArray: React.Dispatch<React.SetStateAction<[string]>>
+  setToRemoveArray: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
   if (selectedFile) {
     await uploadFile(selectedFile)
-      .then((result) => {
+      .then(async (result) => {
         console.log("Upload result:", result);
-        setToRemoveArray(result.toRemoveArray);
+        const removeArray: string[] = result.toRemoveArray;
+        await updateFile(removeArray)
+          .then((res) => {
+            console.log("updateFile result:", res);
+            setToRemoveArray(removeArray);
+          })
+          .catch((err) => {
+            console.log("updateFile error:", err);
+            setError("Update failed");
+          });
+
         setStages((prevState) => {
           return { ...prevState, 2: true, 1: false };
         });
