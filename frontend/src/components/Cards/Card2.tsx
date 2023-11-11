@@ -1,10 +1,10 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React from "react";
+import { baseUrl } from "../../api/baseUrl";
 export {};
-interface Card2Props {
-  handleDownload: () => void;
-}
 
-const Card2: React.FC<Card2Props> = ({ handleDownload }) => {
+const Card2: React.FC = () => {
   return (
     <div className="uk-card uk-card-large uk-card-default uk-card-hover uk-card-body">
       <h3 className="uk-card-title">Update and download the excel</h3>
@@ -15,9 +15,23 @@ const Card2: React.FC<Card2Props> = ({ handleDownload }) => {
       >
         File Uploaded
       </p>
-      <button onClick={handleDownload} className="uk-button uk-button-primary">
+      {/* <button onClick={handleDownload} className="uk-button uk-button-primary">
         Download
-      </button>
+      </button> */}
+      <a
+        type="button"
+        className="uk-button uk-button-primary"
+        id="downloadLink"
+        style={
+          {
+            // display: "none",
+          }
+        }
+        href={`${baseUrl}/download`}
+        download
+      >
+        Download
+      </a>
     </div>
   );
 };

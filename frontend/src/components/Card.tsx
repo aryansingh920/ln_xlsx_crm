@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Card1 from "./Cards/Card1";
 import Card2 from "./Cards/Card2";
-import { downloadExcelFile } from "../service/Card/downloadExcelFile";
 import { handleUpload } from "../service/Card/handleUpload";
-import { handleUpdateAndDownload } from "../service/Card/handleUpdateAndDownload";
-
-const downloadFile: string = "output.xlsx";
+import { updateFile } from "../api/updateFile";
 
 const Card = (props: {
   stages: { [key: number]: boolean };
@@ -24,9 +21,10 @@ const Card = (props: {
   };
 
   useEffect(() => {
-    console.log("Stages", props.stages);
+    // console.log("Stages", props.stages);
   }, [props.stages]);
 
+  //api calls
   const handleSubmit = async () => {
     props.setShowLoader(true);
     await handleUpload(
@@ -34,25 +32,24 @@ const Card = (props: {
       props.setStages,
       setError,
       setToRemoveArray
-    );
+    )
+      .then((res) => {
+        console.log("res", res);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+
+    if (toRemoveArray)
+      await updateFile(toRemoveArray)
+        .then((res) => {
+          console.log("res", res);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
     props.setShowLoader(false);
   };
-
-  //api calls
-  const handleDownload = async () => {
-    props.setShowLoader(true);
-    try {
-      const result = await handleUpdateAndDownload(toRemoveArray);
-      if (result) {
-        downloadExcelFile(result, downloadFile);
-      }
-    } catch (error) {
-      console.error("Download failed:", error);
-    }
-    props.setShowLoader(false);
-  };
-
-  // console.log("Stages",)
 
   return (
     <>
@@ -64,7 +61,7 @@ const Card = (props: {
           handleSubmit={handleSubmit}
         />
       )}
-      {props.stages[2] && <Card2 handleDownload={handleDownload} />}
+      {props.stages[2] && <Card2 />}
     </>
   );
 };

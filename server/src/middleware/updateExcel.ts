@@ -205,6 +205,7 @@ const Changes = async (req: Request, res: Response) => {
         const gpt_Response: GPTInterface = await Chat_GPT_35_Conversation(
           query
         );
+        console.log("gpt_Response", gpt_Response);
         const emailExtract = extractEmail(gpt_Response.MPT);
         EmailNameObject[employee.Name] = _.toLower(emailExtract!) || "";
         // EmailNameObject[employee.Name] = "";

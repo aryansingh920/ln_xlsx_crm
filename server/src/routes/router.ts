@@ -9,6 +9,7 @@ router
   .post("/upload", upload.single("file"), middleware.Upload.uploadFile_post)
   // .post("/translate", middleware.AIEngine.AIMiddleware)
   .post("/updateDownload", middleware.Changes.Changes)
+  .get("/download", middleware.DownloadFile.downloadFile)
 
   .get("*", (req: Request, res: Response) => {
     res.render("404", {

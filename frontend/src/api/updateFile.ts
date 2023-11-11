@@ -1,12 +1,9 @@
 import Axios from "./axios";
 
-export const updateFile = (
-  toRemoveArray: [string]
-): Promise<ArrayBuffer | false> => {
+export const updateFile = (toRemoveArray: [string]) => {
   const body = { removeColumnArray: toRemoveArray };
-  return Axios.post("/updateDownload", body, { responseType: "arraybuffer" })
+  return Axios.post("/updateDownload", body)
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => false);
