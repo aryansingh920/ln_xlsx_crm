@@ -1,5 +1,4 @@
-import { Request, Response } from "express";
-import { OutputFilePath } from "../constants/constants";
+import { Request, Response, OutputFilePath } from "../helper/imports";
 
 const downloadFile = (req: Request, res: Response) => {
   try {

@@ -25,21 +25,13 @@ pip install -r requirements.txt
 
 echo "Setting environment variables..."
 export PORT=$port
-export OPENAI_API_KEY=
-export BARD_1PSID_cookie_value=
-export BARD_1PSIDTS_cookie_value=
-export BARD_1PSIDCC_cookie_value=
 export RAPID_API_KEY_VALUE="4749eed77fmsh282e13aab241c01p1c733djsn8a439686b347"
-export ZERO_BOUNCE_API_KEY_VALUE=
+export ZERO_BOUNCE_API_KEY_VALUE="84fd6828a8d9427cb87d40e09d2c71db"
 
 
 # Create the .env file
 echo "Creating .env file..."
 echo "PORT=$PORT" > "$DESTINATION_PATH"
-echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> "$DESTINATION_PATH"
-echo "BARD_1PSID_cookie_value=$BARD_1PSID_cookie_value" >> "$DESTINATION_PATH"
-echo "BARD_1PSIDTS_cookie_value=$BARD_1PSIDTS_cookie_value" >> "$DESTINATION_PATH"
-echo "BARD_1PSIDCC_cookie_value=$BARD_1PSIDCC_cookie_value" >> "$DESTINATION_PATH"
 echo "RAPID_API_KEY_VALUE=$RAPID_API_KEY_VALUE" >> "$DESTINATION_PATH"
 echo "ZERO_BOUNCE_API_KEY_VALUE=$ZERO_BOUNCE_API_KEY_VALUE" >> "$DESTINATION_PATH"
 

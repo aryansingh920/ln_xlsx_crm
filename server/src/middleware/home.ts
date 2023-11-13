@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response } from "../helper/imports";
 
 const home_get = (req: Request, res: Response) => {
   try {

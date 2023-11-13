@@ -7,7 +7,6 @@ const router: Router = express.Router();
 router
   .get("/", middleware.Home.home_get)
   .post("/upload", upload.single("file"), middleware.Upload.uploadFile_post)
-  // .post("/translate", middleware.AIEngine.AIMiddleware)
   .post("/updateDownload", middleware.Changes.Changes)
   .get("/download", middleware.DownloadFile.downloadFile)
 
