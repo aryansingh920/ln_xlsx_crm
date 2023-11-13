@@ -44,33 +44,36 @@ import { checkEmail } from "../utils/ZeroBounce/checkEmail";
 import { appendStringToFile } from "../utils/txtFileUpload";
 import { extractDomain } from "../utils/QueryExtract/EmailDomain";
 import { ZeroBounceResponse } from "../utils/ZeroBounce/checkEmail";
-// -------------------------------------------------------
+
 
 export {
+  //interface
   ZeroBounceResponse,
-  extractDomain,
-  appendStringToFile,
-  dataSetFilePath,
-  checkEmail,
-  ExcelJS,
-  saveExcelFile,
-  getExcelFileDetails,
-  Constants,
   CompanyData,
   Request,
   Response,
-  deleteColumn,
-  _,
-  get,
-  getColumnNames,
+  GPTInterface,
+
+  //string
+  dataSetFilePath,
+  Constants,
   FilePath,
   OutputFilePath,
   pythonExecFile,
   PythonActions,
+
+  //function
+  extractDomain,
+  appendStringToFile,
+  checkEmail,
+  saveExcelFile,
+  getExcelFileDetails,
+  deleteColumn,
+  get,
+  getColumnNames,
   printCurrentDirectory,
   deleteDirectory,
   createDirectory,
-  path,
   getCellsForColumn,
   formString,
   updateColumnByName,
@@ -85,8 +88,12 @@ export {
   SendEmailQuery,
   extractEmail,
   Chat_GPT_35_Conversation,
-  GPTInterface,
   getRandomElement,
   updateColumnName,
   updateSecondObjectWithEmails,
+
+  //node_modules
+  ExcelJS,
+  _,
+  path,
 };

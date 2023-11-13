@@ -10,9 +10,10 @@ import {
 
 const home_get = async (req: Request, res: Response) => {
   try {
-    // await checkEmail("yoyoaryan920@gmail.com").then(
+    // await checkEmail("yoyoaryan920@gmihbkhail.com").then(
     //   (res: ZeroBounceResponse) => {
-    //     appendStringToFile(dataSetFilePath.domainTxtFile, res.domain);
+    //     if (res.status === "valid")
+    //       appendStringToFile(dataSetFilePath.domainTxtFile, res.domain);
     //     console.log(res);
     //   }
     // );
