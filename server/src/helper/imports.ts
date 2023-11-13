@@ -38,10 +38,20 @@ import { updateColumnName } from "../utils/ExcelManipulation/updateColumnName";
 import { updateSecondObjectWithEmails } from "../utils/UpdateExcel/updateSecondObjectWithEmails";
 import ExcelJS from "exceljs";
 import saveExcelFile from "../utils/ExcelManipulation/saveFile";
-import { Constants } from "../constants/constants";
+import { Constants, dataSetFilePath } from "../constants/constants";
 import { getExcelFileDetails } from "../utils/ExcelManipulation/getExcelFileDetails";
+import { checkEmail } from "../utils/ZeroBounce/checkEmail";
+import { appendStringToFile } from "../utils/txtFileUpload";
+import { extractDomain } from "../utils/QueryExtract/EmailDomain";
+import { ZeroBounceResponse } from "../utils/ZeroBounce/checkEmail";
+// -------------------------------------------------------
 
 export {
+  ZeroBounceResponse,
+  extractDomain,
+  appendStringToFile,
+  dataSetFilePath,
+  checkEmail,
   ExcelJS,
   saveExcelFile,
   getExcelFileDetails,

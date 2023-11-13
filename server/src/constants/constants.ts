@@ -50,5 +50,23 @@ const OutputFilePath: string = path.join(
 );
 
 // Export the FilePath variable
-export { FilePath, Constants, OutputFilePath, pythonExecFile, PythonActions };
+
+const dataSetFilePath: {
+  domainTxtFile: string;
+  emailNamePatternTxtFile: string;
+} = {
+  domainTxtFile: path.join(__dirname, "../../dataset/domain.txt"),
+  emailNamePatternTxtFile: path.join(
+    __dirname,
+    "../../dataset/emailNamePattern.txt"
+  ),
+};
+export {
+  FilePath,
+  Constants,
+  OutputFilePath,
+  pythonExecFile,
+  PythonActions,
+  dataSetFilePath,
+};
 

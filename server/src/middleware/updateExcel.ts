@@ -35,11 +35,7 @@ import {
 } from "../helper/imports";
 
 //----------------------------------------------
-//----------------------------------------------
-//----------------------------------------------
-//----------------------------------------------
-//----------------------------------------------
-//----------------------------------------------
+
 
 const Changes = async (req: Request, res: Response) => {
   try {
@@ -49,14 +45,6 @@ const Changes = async (req: Request, res: Response) => {
 
     let removeColumnArray: string[] = [];
     removeColumnArray = [...req.body.removeColumnArray];
-    // console.log("removeColumnArray", removeColumnArray);
-    // for (let key in req.body) {
-    //   if (endsWithKeep(key)) {
-    //   }
-    //   if (endsWithRemove(key)) {
-    //     removeColumnArray.push(req.body[key]);
-    //   }
-    // }
 
     const inputFilePath = FilePath;
     const outputFilePath = OutputFilePath;
