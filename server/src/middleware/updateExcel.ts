@@ -62,6 +62,13 @@ const Changes = async (req: Request, res: Response) => {
   }
 };
 
+export default {
+  Changes,
+};
+
+
+//helper functions
+
 const deleteAndCreateDirectory = async (): Promise<void> => {
   await deleteDirectory(path.join(printCurrentDirectory(), "output"));
   await createDirectory(path.join(printCurrentDirectory(), "output"));
@@ -289,6 +296,3 @@ const updateColumnNamesAndRespond = async (
   res.status(200).json({ message: "File Updated" });
 };
 
-export default {
-  Changes,
-};
