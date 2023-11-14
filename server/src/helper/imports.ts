@@ -32,7 +32,11 @@ import {
   SendEmailQuery,
   extractEmail,
 } from "../utils/QueryExtract/Email";
-import { Chat_GPT_35_Conversation, GPTInterface } from "../utils/AI/AIEngine";
+import {
+  Chat_GPT_35_Conversation,
+  GPTInterface,
+  Chat_Llama_2,
+} from "../utils/AI/AIEngine";
 import { getRandomElement } from "../utils/RandomElement";
 import { updateColumnName } from "../utils/ExcelManipulation/updateColumnName";
 import { updateSecondObjectWithEmails } from "../utils/UpdateExcel/updateSecondObjectWithEmails";
@@ -63,6 +67,7 @@ export {
   PythonActions,
 
   //function
+  Chat_Llama_2,
   extractNames,
   extractDomain,
   appendStringToFile,

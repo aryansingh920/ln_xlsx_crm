@@ -1,4 +1,9 @@
 import {
+  Chat_Llama_2,
+  dataSetFilePath,
+  appendStringToFile,
+  ZeroBounceResponse,
+  checkEmail,
   extractNames,
   CompanyData,
   Request,
@@ -65,7 +70,6 @@ const Changes = async (req: Request, res: Response) => {
 export default {
   Changes,
 };
-
 
 //helper functions
 
@@ -177,12 +181,18 @@ const processEmailsAndNames = async (
     getColumnCellsEmails.slice(1)
   );
 
+  console.log("flattenObjects", flattenObjects);
+
   const EmailClearing: CompanyData = generateNewObject(flattenObjects);
+
+  console.log("EmailClearing", EmailClearing);
 
   let EmailName: { [key: string]: string } = {};
   for (let name in getColumnCellsName.slice(1)) {
     EmailName[getColumnCellsName.slice(1)[name]] = "";
   }
+
+  console.log("EmailName", EmailName);
 
   const EmailNameObject = updateSecondObjectWithEmails(
     EmailClearing,
@@ -231,11 +241,33 @@ const processEmailsAndNames = async (
         companyName
       );
       const query = `${randomElementQuery} and ${randomElementQuery2} so ${getEmailQuery} just give the email and no conversational text required no extra punctuation needed`;
+      console.log("query", query);
       const gpt_Response: GPTInterface = await Chat_GPT_35_Conversation(query);
       console.log("gpt_Response", gpt_Response);
 
       const emailExtract = extractEmail(gpt_Response.MPT);
-      EmailNameObject[employee.Name] = _.toLower(emailExtract!) || "";
+      const emailExtractLower = _.toLower(emailExtract!);
+
+      if (emailExtractLower !== "") {
+        await checkEmail(emailExtractLower).then((res: ZeroBounceResponse) => {
+          if (res.status === "valid") {
+            console.log("valid email");
+            appendStringToFile(dataSetFilePath.domainTxtFile, res.domain);
+            // console.log(res);
+            EmailNameObject[employee.Name] = emailExtractLower || "";
+          } else {
+            console.log("invalid email");
+            // console.log(res);
+            EmailNameObject[employee.Name] = "Email Invalid";
+          }
+        });
+      } else {
+        console.log("invalid email");
+        // console.log(res);
+        EmailNameObject[employee.Name] = "Email Invalid";
+      }
+
+      // console.log(emailVerify);
     }
 
     console.log("----------------------------------------------------------");
@@ -295,4 +327,3 @@ const updateColumnNamesAndRespond = async (
 
   res.status(200).json({ message: "File Updated" });
 };
-

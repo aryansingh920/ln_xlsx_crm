@@ -150,7 +150,7 @@ export async function Chat_GPT_35_Chat(query: String): Promise<GPTInterface> {
   }
 }
 
-export async function Chat_Llama_2(query: String): Promise<void> {
+export async function Chat_Llama_2(query: String): Promise<GPTInterface> {
   const options = {
     method: "POST",
     url: "https://open-ai21.p.rapidapi.com/chatllama",
