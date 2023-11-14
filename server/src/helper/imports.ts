@@ -44,7 +44,7 @@ import { checkEmail } from "../utils/ZeroBounce/checkEmail";
 import { appendStringToFile } from "../utils/txtFileUpload";
 import { extractDomain } from "../utils/QueryExtract/EmailDomain";
 import { ZeroBounceResponse } from "../utils/ZeroBounce/checkEmail";
-
+import { extractNames } from "../utils/QueryExtract/extractNames";
 
 export {
   //interface
@@ -63,6 +63,7 @@ export {
   PythonActions,
 
   //function
+  extractNames,
   extractDomain,
   appendStringToFile,
   checkEmail,
