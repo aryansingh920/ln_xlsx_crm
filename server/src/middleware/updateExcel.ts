@@ -35,7 +35,24 @@ import {
 } from "../helper/imports";
 
 //----------------------------------------------
+function extractNames(inputList: string[]): {
+  firstName: string[];
+  lastName: string[];
+} {
+  const firstName: string[] = [];
+  const lastName: string[] = [];
 
+  inputList.forEach((entry) => {
+    const words = entry.trim().split(/\s+/);
+
+    if (words.length > 0) {
+      firstName.push(words[0]);
+      lastName.push(words[words.length - 1]);
+    }
+  });
+
+  return { firstName, lastName };
+}
 
 const Changes = async (req: Request, res: Response) => {
   try {
@@ -71,11 +88,10 @@ const Changes = async (req: Request, res: Response) => {
 
     for (const i of [
       findIndexByStringMatch(columnNames, "Name"),
-      findIndexByStringMatch(columnNames, "First Name"),
-      findIndexByStringMatch(columnNames, "Last Name"),
+      // findIndexByStringMatch(columnNames, "First Name"),
+      // findIndexByStringMatch(columnNames, "Last Name"),
     ]) {
-      // To Update Column 1,2,3
-
+      // To Update Column 1
       let getColumnCells = await getCellsForColumn(
         excelFilePath,
         columnNames[i]
@@ -83,13 +99,13 @@ const Changes = async (req: Request, res: Response) => {
 
       const updateColumnCells: string[] = [];
 
-      //removing extra spaces and accents here
       for (const cell of getColumnCells) {
         updateColumnCells.push(removeExtraSpaces(formString(cell)));
       }
 
       const REChecker = extractNamesFullNameRE(updateColumnCells);
-      // console.log("REChecker", REChecker);
+
+      const { firstName, lastName } = extractNames(REChecker);
 
       await updateColumnByName(
         pythonExecFile,
@@ -99,7 +115,26 @@ const Changes = async (req: Request, res: Response) => {
         columnNames[i],
         REChecker
       );
+
+      await updateColumnByName(
+        pythonExecFile,
+        PythonActions.UpdateColumnByName,
+        OutputFilePath,
+        OutputFilePath,
+        columnNames[findIndexByStringMatch(columnNames, "First Name")],
+        firstName
+      );
+
+      await updateColumnByName(
+        pythonExecFile,
+        PythonActions.UpdateColumnByName,
+        OutputFilePath,
+        OutputFilePath,
+        columnNames[findIndexByStringMatch(columnNames, "Last Name")],
+        lastName
+      );
     }
+
     let getColumnCellsEmails = await getCellsForColumn(
       outputFilePath,
       columnNames[findIndexByStringMatch(columnNames, "Emails")]
@@ -192,6 +227,7 @@ const Changes = async (req: Request, res: Response) => {
           query
         );
         console.log("gpt_Response", gpt_Response);
+
         const emailExtract = extractEmail(gpt_Response.MPT);
         EmailNameObject[employee.Name] = _.toLower(emailExtract!) || "";
         // EmailNameObject[employee.Name] = "";

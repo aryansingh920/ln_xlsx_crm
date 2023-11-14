@@ -105,7 +105,8 @@ const formString = (strings: string): string => {
 
   for (const character of strings) {
     const checkedChar: CheckedChar = checkForAccents(character);
-    if (checkedChar.isLetter) {
+    if (true) {
+      // if (checkedChar.isLetter) {
       newWord += checkedChar.char;
     }
     if (!checkedChar.isLetter) {
