@@ -1,4 +1,8 @@
+import { get } from "lodash";
 import {
+  updatePhoneNumberArray,
+  getUpdatedCountryArray,
+  LlamaInterface,
   Chat_Llama_2,
   dataSetFilePath,
   appendStringToFile,
@@ -10,7 +14,6 @@ import {
   Response,
   deleteColumn,
   _,
-  get,
   getColumnNames,
   FilePath,
   OutputFilePath,
@@ -33,11 +36,10 @@ import {
   GetEmailQuery,
   SendEmailQuery,
   extractEmail,
-  Chat_GPT_35_Conversation,
-  GPTInterface,
   getRandomElement,
   updateColumnName,
   updateSecondObjectWithEmails,
+  Constants,
 } from "../helper/imports";
 
 //----------------------------------------------
@@ -142,6 +144,46 @@ const processColumnsAndUpdate = async (
       lastName
     );
   }
+
+  const getColumnCellsCountry = await getCellsForColumn(
+    outputFilePath,
+    columnNames[findIndexByStringMatch(columnNames, "Location")]
+  );
+  const updatedCountryArray = await getUpdatedCountryArray(
+    getColumnCellsCountry.slice(1)
+  );
+  updatedCountryArray.unshift("Location");
+  // console.log("updatedCountryArray", updatedCountryArray);
+  await updateColumnByName(
+    pythonExecFile,
+    PythonActions.UpdateColumnByName,
+    outputFilePath,
+    outputFilePath,
+    columnNames[findIndexByStringMatch(columnNames, "Location")],
+    updatedCountryArray
+  );
+
+  const getColumnCellsPhone = await getCellsForColumn(
+    outputFilePath,
+    columnNames[findIndexByStringMatch(columnNames, "Phones")]
+  );
+  // console.log("getColumnCellsPhone", getColumnCellsPhone);
+  const updatedPhoneArray = updatePhoneNumberArray(
+    getColumnCellsPhone.slice(1)
+  );
+  console.log("updatedPhoneArray", updatedPhoneArray);
+
+  updatedPhoneArray.unshift("Phones");
+  console.log("updatedPhoneArray", updatedPhoneArray);
+
+  await updateColumnByName(
+    pythonExecFile,
+    PythonActions.UpdateColumnByName,
+    outputFilePath,
+    outputFilePath,
+    columnNames[findIndexByStringMatch(columnNames, "Phones")],
+    updatedPhoneArray
+  );
 };
 
 const processEmailsAndNames = async (
@@ -241,11 +283,14 @@ const processEmailsAndNames = async (
         companyName
       );
       const query = `${randomElementQuery} and ${randomElementQuery2} so ${getEmailQuery} just give the email and no conversational text required no extra punctuation needed`;
-      console.log("query", query);
-      const gpt_Response: GPTInterface = await Chat_GPT_35_Conversation(query);
-      console.log("gpt_Response", gpt_Response);
+      // console.log("query", query);
+      // const gpt_Response: GPTInterface = await Chat_GPT(query);
+      const gpt_Response: LlamaInterface = await Chat_Llama_2(query);
+      // console.log("gpt_Response", gpt_Response);
 
-      const emailExtract = extractEmail(gpt_Response.MPT);
+      const emailExtract = extractEmail(
+        gpt_Response.LLAMA ? gpt_Response.LLAMA : ""
+      );
       const emailExtractLower = _.toLower(emailExtract!);
 
       if (emailExtractLower !== "") {
@@ -262,9 +307,9 @@ const processEmailsAndNames = async (
           }
         });
       } else {
-        console.log("invalid email");
+        // console.log("invalid email");
         // console.log(res);
-        EmailNameObject[employee.Name] = "Email Invalid";
+        EmailNameObject[employee.Name] = Constants.InvalidEmailMessage;
       }
 
       // console.log(emailVerify);

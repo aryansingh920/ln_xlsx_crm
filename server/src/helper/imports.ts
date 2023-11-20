@@ -36,6 +36,9 @@ import {
   Chat_GPT_35_Conversation,
   GPTInterface,
   Chat_Llama_2,
+  Chat_GPT,
+  Question_Answer,
+  LlamaInterface,
 } from "../utils/AI/AIEngine";
 import { getRandomElement } from "../utils/RandomElement";
 import { updateColumnName } from "../utils/ExcelManipulation/updateColumnName";
@@ -49,6 +52,8 @@ import { appendStringToFile } from "../utils/txtFileUpload";
 import { extractDomain } from "../utils/QueryExtract/EmailDomain";
 import { ZeroBounceResponse } from "../utils/ZeroBounce/checkEmail";
 import { extractNames } from "../utils/QueryExtract/extractNames";
+import { getUpdatedCountryArray } from "../utils/QueryExtract/ReadCountry";
+import { updatePhoneNumberArray } from "../utils/QueryExtract/extractPhoneNumbers";
 
 export {
   //interface
@@ -57,6 +62,9 @@ export {
   Request,
   Response,
   GPTInterface,
+  LlamaInterface,
+
+  // ---------------------------------------------------
 
   //string
   dataSetFilePath,
@@ -66,7 +74,13 @@ export {
   pythonExecFile,
   PythonActions,
 
+  // ---------------------------------------------------
+
   //function
+  updatePhoneNumberArray,
+  getUpdatedCountryArray,
+  Question_Answer,
+  Chat_GPT,
   Chat_Llama_2,
   extractNames,
   extractDomain,
@@ -98,8 +112,12 @@ export {
   updateColumnName,
   updateSecondObjectWithEmails,
 
+  // ---------------------------------------------------
+
   //node_modules
   ExcelJS,
   _,
   path,
+
+  // ---------------------------------------------------
 };

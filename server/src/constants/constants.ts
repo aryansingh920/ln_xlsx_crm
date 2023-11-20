@@ -5,6 +5,7 @@ const Constants: {
   FileName: string;
   SheetName: string;
   Columns_To_Keep: string[];
+  InvalidEmailMessage: string;
 } = {
   FileName: "output.xlsx",
   SheetName: "Sheet 1",
@@ -24,6 +25,7 @@ const Constants: {
     "Location",
     // "Linkedin",
   ],
+  InvalidEmailMessage: "Email Invalid",
 };
 
 const PythonActions: {
@@ -36,8 +38,8 @@ const PythonActions: {
   UpdateColumnName: "updateColumnName",
 };
 
-// const pythonExecFile: string = path.join(__dirname, "python/main.py");
 const pythonExecFile: string = path.join(__dirname, "../../python/main.py");
+const geoPythonExecFile: string = path.join(__dirname, "../../python/geo.py");
 
 const FilePath: string = path.join(
   __dirname,
@@ -48,6 +50,22 @@ const OutputFilePath: string = path.join(
   __dirname,
   `../../output/${Constants.FileName}`
 );
+
+const updateExcelColumnNames: Record<string, string> = {
+  "First Name": "First Name",
+  "Last Name": "Last Name",
+  Emails: "Emails",
+  Phones: "Phones",
+  Company: "Company",
+  Title: "Title",
+  Country: "Country",
+  Source: "Source",
+  Industry: "Industry",
+  "Assigned User": "Assigned User",
+  Job: "Job",
+  Location: "Location",
+  Linkedin: "Linkedin",
+};
 
 // Export the FilePath variable
 
@@ -68,5 +86,6 @@ export {
   pythonExecFile,
   PythonActions,
   dataSetFilePath,
+  geoPythonExecFile,
 };
 

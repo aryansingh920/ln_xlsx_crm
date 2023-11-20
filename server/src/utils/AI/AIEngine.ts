@@ -1,8 +1,17 @@
+// import { GPTInterface } from './AIEngine';
 import axios from "axios";
 
-export interface GPTInterface {
+export interface MPTInterface {
   MPT: string;
   servercode: number;
+}
+
+export interface GPTInterface {
+  result: string | null;
+}
+
+export interface LlamaInterface {
+  LLAMA: string | null;
 }
 
 export async function Conversation_gpt35(query: String): Promise<void> {
@@ -65,7 +74,7 @@ export async function Bard_Palm2(query: String): Promise<void> {
   }
 }
 
-export async function Chat_GPT(query: String): Promise<void> {
+export async function Chat_GPT(query: String): Promise<GPTInterface> {
   const options = {
     method: "POST",
     url: "https://open-ai21.p.rapidapi.com/conversationgpt",
@@ -86,7 +95,7 @@ export async function Chat_GPT(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    // console.log(response.data);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -108,18 +117,18 @@ export async function Chat_GPT_35_Conversation(
     data: {
       messages: [
         {
-          role: "ai",
+          role: "user",
           content: query,
         },
       ],
-      web_access: false,
+      web_access: true,
     },
   };
 
   try {
     console.log("AI Called");
     const response = await axios.request(options);
-    // console.log(response.data);
+    // console.log("response", response);
     console.log("AI gave response");
     return response.data;
   } catch (error) {
@@ -150,7 +159,7 @@ export async function Chat_GPT_35_Chat(query: String): Promise<GPTInterface> {
   }
 }
 
-export async function Chat_Llama_2(query: String): Promise<GPTInterface> {
+export async function Chat_Llama_2(query: String): Promise<LlamaInterface> {
   const options = {
     method: "POST",
     url: "https://open-ai21.p.rapidapi.com/chatllama",
@@ -190,7 +199,7 @@ export async function Question_Answer(query: String): Promise<void> {
 
   try {
     const response = await axios.request(options);
-    // console.log(response.data);
+    console.log(response.data);
   } catch (error) {
     console.error(error);
   }
