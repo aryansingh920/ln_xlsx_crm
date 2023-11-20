@@ -54,6 +54,7 @@ import { ZeroBounceResponse } from "../utils/ZeroBounce/checkEmail";
 import { extractNames } from "../utils/QueryExtract/extractNames";
 import { getUpdatedCountryArray } from "../utils/QueryExtract/ReadCountry";
 import { updatePhoneNumberArray } from "../utils/QueryExtract/extractPhoneNumbers";
+import { updateExcelColumnNames } from "../constants/constants";
 
 export {
   //interface
@@ -73,6 +74,11 @@ export {
   OutputFilePath,
   pythonExecFile,
   PythonActions,
+
+  // ---------------------------------------------------
+
+  //constants
+  updateExcelColumnNames,
 
   // ---------------------------------------------------
 

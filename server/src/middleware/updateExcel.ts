@@ -1,5 +1,7 @@
+import { LastNameQuery } from "./../utils/QueryExtract/Name";
 import { get } from "lodash";
 import {
+  updateExcelColumnNames,
   updatePhoneNumberArray,
   getUpdatedCountryArray,
   LlamaInterface,
@@ -105,7 +107,9 @@ const processColumnsAndUpdate = async (
   excelFilePath: string,
   outputFilePath: string
 ): Promise<void> => {
-  for (const i of [findIndexByStringMatch(columnNames, "Name")]) {
+  for (const i of [
+    findIndexByStringMatch(columnNames, updateExcelColumnNames.Name),
+  ]) {
     const columnName = columnNames[i];
 
     const getColumnCells = await getCellsForColumn(excelFilePath, columnName);
@@ -131,7 +135,9 @@ const processColumnsAndUpdate = async (
       PythonActions.UpdateColumnByName,
       outputFilePath,
       outputFilePath,
-      columnNames[findIndexByStringMatch(columnNames, "First Name")],
+      columnNames[
+        findIndexByStringMatch(columnNames, updateExcelColumnNames.FirstName)
+      ],
       firstName
     );
 
@@ -140,48 +146,58 @@ const processColumnsAndUpdate = async (
       PythonActions.UpdateColumnByName,
       outputFilePath,
       outputFilePath,
-      columnNames[findIndexByStringMatch(columnNames, "Last Name")],
+      columnNames[
+        findIndexByStringMatch(columnNames, updateExcelColumnNames.LastName)
+      ],
       lastName
     );
   }
 
   const getColumnCellsCountry = await getCellsForColumn(
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "Location")]
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.Location)
+    ]
   );
   const updatedCountryArray = await getUpdatedCountryArray(
     getColumnCellsCountry.slice(1)
   );
-  updatedCountryArray.unshift("Location");
+  updatedCountryArray.unshift(updateExcelColumnNames.Location);
   // console.log("updatedCountryArray", updatedCountryArray);
   await updateColumnByName(
     pythonExecFile,
     PythonActions.UpdateColumnByName,
     outputFilePath,
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "Location")],
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.Location)
+    ],
     updatedCountryArray
   );
 
   const getColumnCellsPhone = await getCellsForColumn(
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "Phones")]
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.Phones)
+    ]
   );
   // console.log("getColumnCellsPhone", getColumnCellsPhone);
   const updatedPhoneArray = updatePhoneNumberArray(
     getColumnCellsPhone.slice(1)
   );
-  console.log("updatedPhoneArray", updatedPhoneArray);
+  // console.log("updatedPhoneArray", updatedPhoneArray);
 
-  updatedPhoneArray.unshift("Phones");
-  console.log("updatedPhoneArray", updatedPhoneArray);
+  updatedPhoneArray.unshift(updateExcelColumnNames.Phones);
+  // console.log("updatedPhoneArray", updatedPhoneArray);
 
   await updateColumnByName(
     pythonExecFile,
     PythonActions.UpdateColumnByName,
     outputFilePath,
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "Phones")],
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.Phones)
+    ],
     updatedPhoneArray
   );
 };
@@ -192,27 +208,37 @@ const processEmailsAndNames = async (
 ): Promise<void> => {
   const getColumnCellsEmails = await getCellsForColumn(
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "Emails")]
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.Emails)
+    ]
   );
 
   const getColumnCellsCompany = await getCellsForColumn(
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "Company")]
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.Company)
+    ]
   );
 
   const getColumnCellsName = await getCellsForColumn(
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "Name")]
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.Name)
+    ]
   );
 
   const getColumnCellsFirstName = await getCellsForColumn(
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "First Name")]
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.FirstName)
+    ]
   );
 
   const getColumnCellsLastName = await getCellsForColumn(
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "Last Name")]
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.LastName)
+    ]
   );
 
   const flattenObjects: CompanyData = flattenAndOrganize(
@@ -319,14 +345,16 @@ const processEmailsAndNames = async (
   }
 
   const EmailNameObjectValues: string[] = Object.values(EmailNameObject);
-  EmailNameObjectValues.unshift("Emails");
+  EmailNameObjectValues.unshift(updateExcelColumnNames.Emails);
 
   await updateColumnByName(
     pythonExecFile,
     PythonActions.UpdateColumnByName,
     outputFilePath,
     outputFilePath,
-    columnNames[findIndexByStringMatch(columnNames, "Emails")],
+    columnNames[
+      findIndexByStringMatch(columnNames, updateExcelColumnNames.Emails)
+    ],
     EmailNameObjectValues
   );
 };
@@ -342,32 +370,32 @@ const updateColumnNamesAndRespond = async (
     PythonActions.UpdateColumnName,
     outputFilePath,
     outputFilePath,
-    "Location",
-    "Country"
+    updateExcelColumnNames.Location,
+    updateExcelColumnNames.Country
   );
   await updateColumnName(
     pythonExecFile,
     PythonActions.UpdateColumnName,
     outputFilePath,
     outputFilePath,
-    "Job",
-    "Title"
+    updateExcelColumnNames.Job,
+    updateExcelColumnNames.Title
   );
   await updateColumnName(
     pythonExecFile,
     PythonActions.UpdateColumnName,
     outputFilePath,
     outputFilePath,
-    "Phones",
-    "Phone"
+    updateExcelColumnNames.Phones,
+    updateExcelColumnNames.Phone
   );
   await updateColumnName(
     pythonExecFile,
     PythonActions.UpdateColumnName,
     outputFilePath,
     outputFilePath,
-    "Emails",
-    "Email"
+    updateExcelColumnNames.Emails,
+    updateExcelColumnNames.Email
   );
 
   res.status(200).json({ message: "File Updated" });

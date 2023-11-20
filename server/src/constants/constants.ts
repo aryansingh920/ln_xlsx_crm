@@ -52,19 +52,24 @@ const OutputFilePath: string = path.join(
 );
 
 const updateExcelColumnNames: Record<string, string> = {
-  "First Name": "First Name",
-  "Last Name": "Last Name",
+  FirstName: "First Name",
+  LastName: "Last Name",
+  Name: "Name",
+
+  Email: "Email",
   Emails: "Emails",
+
   Phones: "Phones",
+  Phone: "Phone",
+
   Company: "Company",
-  Title: "Title",
+
   Country: "Country",
-  Source: "Source",
-  Industry: "Industry",
-  "Assigned User": "Assigned User",
+
+  Title: "Title",
   Job: "Job",
+
   Location: "Location",
-  Linkedin: "Linkedin",
 };
 
 // Export the FilePath variable
@@ -80,6 +85,7 @@ const dataSetFilePath: {
   ),
 };
 export {
+  updateExcelColumnNames,
   FilePath,
   Constants,
   OutputFilePath,
