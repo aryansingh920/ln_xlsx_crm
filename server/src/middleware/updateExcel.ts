@@ -1,6 +1,6 @@
-import { LastNameQuery } from "./../utils/QueryExtract/Name";
 import { get } from "lodash";
 import {
+  LastNameQuery,
   updateExcelColumnNames,
   updatePhoneNumberArray,
   getUpdatedCountryArray,
@@ -309,10 +309,8 @@ const processEmailsAndNames = async (
         companyName
       );
       const query = `${randomElementQuery} and ${randomElementQuery2} so ${getEmailQuery} just give the email and no conversational text required no extra punctuation needed`;
-      // console.log("query", query);
-      // const gpt_Response: GPTInterface = await Chat_GPT(query);
+
       const gpt_Response: LlamaInterface = await Chat_Llama_2(query);
-      // console.log("gpt_Response", gpt_Response);
 
       const emailExtract = extractEmail(
         gpt_Response.LLAMA ? gpt_Response.LLAMA : ""

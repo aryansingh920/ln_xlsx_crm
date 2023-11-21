@@ -55,6 +55,7 @@ import { extractNames } from "../utils/QueryExtract/extractNames";
 import { getUpdatedCountryArray } from "../utils/QueryExtract/ReadCountry";
 import { updatePhoneNumberArray } from "../utils/QueryExtract/extractPhoneNumbers";
 import { updateExcelColumnNames } from "../constants/constants";
+import { LastNameQuery } from "./../utils/QueryExtract/Name";
 
 export {
   //interface
@@ -83,6 +84,7 @@ export {
   // ---------------------------------------------------
 
   //function
+  LastNameQuery,
   updatePhoneNumberArray,
   getUpdatedCountryArray,
   Question_Answer,
