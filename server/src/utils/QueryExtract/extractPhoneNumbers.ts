@@ -1,7 +1,7 @@
 function extractValidPhoneNumbers(input: string): string {
   //   const regex = /\+\d{1,4}[-\s]\d{3}-\d{3}-\d{4}/g;
   //   const regex = /\+\d{1,4} \d{3}-\d{3}-\d{4}/g;
-  const regex = /(?<!DNC)[\d\s-]+/g;
+  const regex = /\+\d{1,}[-\s]\d{1,}[-\s]\d{1,}/g;
   const matches = input.match(regex);
 
   if (matches) {

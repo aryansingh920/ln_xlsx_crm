@@ -1,17 +1,8 @@
-import { get } from "lodash";
 import {
-  LastNameQuery,
   updateExcelColumnNames,
   updatePhoneNumberArray,
   getUpdatedCountryArray,
-  LlamaInterface,
-  Chat_Llama_2,
-  dataSetFilePath,
-  appendStringToFile,
-  ZeroBounceResponse,
-  checkEmail,
   extractNames,
-  CompanyData,
   Request,
   Response,
   deleteColumn,
@@ -31,17 +22,8 @@ import {
   removeExtraSpaces,
   extractNamesFullNameRE,
   findIndexByStringMatch,
-  flattenAndOrganize,
-  generateNewObject,
-  filterEmployeesWithEmail,
-  filterEmployeesWithOutEmail,
-  GetEmailQuery,
-  SendEmailQuery,
-  extractEmail,
-  getRandomElement,
   updateColumnName,
-  updateSecondObjectWithEmails,
-  Constants,
+  processEmailsAndNames,
 } from "../helper/imports";
 
 //----------------------------------------------
@@ -202,160 +184,6 @@ const processColumnsAndUpdate = async (
   );
 };
 
-const processEmailsAndNames = async (
-  outputFilePath: string,
-  columnNames: string[]
-): Promise<void> => {
-  const getColumnCellsEmails = await getCellsForColumn(
-    outputFilePath,
-    columnNames[
-      findIndexByStringMatch(columnNames, updateExcelColumnNames.Emails)
-    ]
-  );
-
-  const getColumnCellsCompany = await getCellsForColumn(
-    outputFilePath,
-    columnNames[
-      findIndexByStringMatch(columnNames, updateExcelColumnNames.Company)
-    ]
-  );
-
-  const getColumnCellsName = await getCellsForColumn(
-    outputFilePath,
-    columnNames[
-      findIndexByStringMatch(columnNames, updateExcelColumnNames.Name)
-    ]
-  );
-
-  const getColumnCellsFirstName = await getCellsForColumn(
-    outputFilePath,
-    columnNames[
-      findIndexByStringMatch(columnNames, updateExcelColumnNames.FirstName)
-    ]
-  );
-
-  const getColumnCellsLastName = await getCellsForColumn(
-    outputFilePath,
-    columnNames[
-      findIndexByStringMatch(columnNames, updateExcelColumnNames.LastName)
-    ]
-  );
-
-  const flattenObjects: CompanyData = flattenAndOrganize(
-    getColumnCellsCompany.slice(1),
-    getColumnCellsName.slice(1),
-    getColumnCellsFirstName.slice(1),
-    getColumnCellsLastName.slice(1),
-    getColumnCellsEmails.slice(1)
-  );
-
-  console.log("flattenObjects", flattenObjects);
-
-  const EmailClearing: CompanyData = generateNewObject(flattenObjects);
-
-  console.log("EmailClearing", EmailClearing);
-
-  let EmailName: { [key: string]: string } = {};
-  for (let name in getColumnCellsName.slice(1)) {
-    EmailName[getColumnCellsName.slice(1)[name]] = "";
-  }
-
-  console.log("EmailName", EmailName);
-
-  const EmailNameObject = updateSecondObjectWithEmails(
-    EmailClearing,
-    EmailName
-  );
-
-  for (let companyName in EmailClearing) {
-    console.log("----------------------------------------------------------");
-    console.log("companyName", companyName);
-    const EmployeeObjectWithEmail = filterEmployeesWithEmail(
-      EmailClearing,
-      companyName
-    );
-    const EmployeeObjectWithoutEmail = filterEmployeesWithOutEmail(
-      EmailClearing,
-      companyName
-    );
-
-    const randomElementWithEmail = getRandomElement(
-      EmployeeObjectWithEmail[companyName]
-    );
-    const randomElementWithEmail2 = getRandomElement(
-      EmployeeObjectWithEmail[companyName]
-    );
-
-    const randomElementQuery: string = SendEmailQuery(
-      randomElementWithEmail?.Name || "",
-      randomElementWithEmail?.["First Name"] || "",
-      randomElementWithEmail?.["Last Name"] || "",
-      companyName,
-      randomElementWithEmail?.Email || [""]
-    );
-    const randomElementQuery2: string = SendEmailQuery(
-      randomElementWithEmail2?.Name || "",
-      randomElementWithEmail2?.["First Name"] || "",
-      randomElementWithEmail2?.["Last Name"] || "",
-      companyName,
-      randomElementWithEmail2?.Email || [""]
-    );
-
-    for (let employee of EmployeeObjectWithoutEmail[companyName]) {
-      const getEmailQuery: string = GetEmailQuery(
-        employee.Name,
-        employee["First Name"],
-        employee["Last Name"],
-        companyName
-      );
-      const query = `${randomElementQuery} and ${randomElementQuery2} so ${getEmailQuery} just give the email and no conversational text required no extra punctuation needed`;
-
-      const gpt_Response: LlamaInterface = await Chat_Llama_2(query);
-
-      const emailExtract = extractEmail(
-        gpt_Response.LLAMA ? gpt_Response.LLAMA : ""
-      );
-      const emailExtractLower = _.toLower(emailExtract!);
-
-      if (emailExtractLower !== "") {
-        await checkEmail(emailExtractLower).then((res: ZeroBounceResponse) => {
-          if (res.status === "valid") {
-            console.log("valid email");
-            appendStringToFile(dataSetFilePath.domainTxtFile, res.domain);
-            // console.log(res);
-            EmailNameObject[employee.Name] = emailExtractLower || "";
-          } else {
-            console.log("invalid email");
-            // console.log(res);
-            EmailNameObject[employee.Name] = "Email Invalid";
-          }
-        });
-      } else {
-        // console.log("invalid email");
-        // console.log(res);
-        EmailNameObject[employee.Name] = Constants.InvalidEmailMessage;
-      }
-
-      // console.log(emailVerify);
-    }
-
-    console.log("----------------------------------------------------------");
-  }
-
-  const EmailNameObjectValues: string[] = Object.values(EmailNameObject);
-  EmailNameObjectValues.unshift(updateExcelColumnNames.Emails);
-
-  await updateColumnByName(
-    pythonExecFile,
-    PythonActions.UpdateColumnByName,
-    outputFilePath,
-    outputFilePath,
-    columnNames[
-      findIndexByStringMatch(columnNames, updateExcelColumnNames.Emails)
-    ],
-    EmailNameObjectValues
-  );
-};
 
 const updateColumnNamesAndRespond = async (
   outputFilePath: string,

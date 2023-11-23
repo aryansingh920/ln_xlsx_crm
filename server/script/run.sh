@@ -56,5 +56,6 @@ fi
 npm ls
 echo "Compiling SCSS to CSS..."
 bash sass.sh
+# npm run debug
 npm start
 npm test

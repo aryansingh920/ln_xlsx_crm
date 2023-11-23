@@ -5,15 +5,26 @@ export interface Employee {
   Email: string | string[];
 }
 
+export interface EmployeeWithFilteredEmail {
+  Name: string;
+  "First Name": string;
+  "Last Name": string;
+  Email: string;
+}
+
 export interface CompanyData {
   [key: string]: Employee[];
 }
 
-export function generateNewObject(input: CompanyData): CompanyData {
-  const result: CompanyData = {};
+export interface CompanyDataWithFilteredEmail {
+  [key: string]: EmployeeWithFilteredEmail[];
+}
+
+export function generateNewObject(input: CompanyData): CompanyDataWithFilteredEmail {
+  const result: CompanyDataWithFilteredEmail = {};
 
   for (const companyName in input) {
-    const employees: Employee[] = [];
+    const employees: EmployeeWithFilteredEmail[] = [];
 
     for (const employee of input[companyName]) {
       const emailKeywords = companyName
@@ -71,10 +82,10 @@ export function generateNewObject(input: CompanyData): CompanyData {
 }
 
 export function filterEmployeesWithEmail(
-  input: CompanyData,
+  input: CompanyDataWithFilteredEmail,
   companyName: string
-): CompanyData {
-  const result: CompanyData = {};
+): CompanyDataWithFilteredEmail {
+  const result: CompanyDataWithFilteredEmail = {};
 
   if (input.hasOwnProperty(companyName)) {
     result[companyName] = input[companyName].filter(
@@ -89,10 +100,10 @@ export function filterEmployeesWithEmail(
 }
 
 export function filterEmployeesWithOutEmail(
-  input: CompanyData,
+  input: CompanyDataWithFilteredEmail,
   companyName: string
-): CompanyData {
-  const result: CompanyData = {};
+): CompanyDataWithFilteredEmail {
+  const result: CompanyDataWithFilteredEmail = {};
 
   // for (const companyName in input) {
   if (input.hasOwnProperty(companyName)) {

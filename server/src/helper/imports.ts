@@ -26,6 +26,9 @@ import {
   generateNewObject,
   filterEmployeesWithEmail,
   filterEmployeesWithOutEmail,
+  Employee,
+  EmployeeWithFilteredEmail,
+  CompanyDataWithFilteredEmail,
 } from "../utils/UpdateExcel/EmailMap";
 import {
   GetEmailQuery,
@@ -33,6 +36,7 @@ import {
   extractEmail,
 } from "../utils/QueryExtract/Email";
 import {
+  Chat_GPT_35_Chat,
   Chat_GPT_35_Conversation,
   GPTInterface,
   Chat_Llama_2,
@@ -40,7 +44,7 @@ import {
   Question_Answer,
   LlamaInterface,
 } from "../utils/AI/AIEngine";
-import { getRandomElement } from "../utils/RandomElement";
+import { getRandomElements, getRandomElement } from "../utils/RandomElement";
 import { updateColumnName } from "../utils/ExcelManipulation/updateColumnName";
 import { updateSecondObjectWithEmails } from "../utils/UpdateExcel/updateSecondObjectWithEmails";
 import ExcelJS from "exceljs";
@@ -56,6 +60,10 @@ import { getUpdatedCountryArray } from "../utils/QueryExtract/ReadCountry";
 import { updatePhoneNumberArray } from "../utils/QueryExtract/extractPhoneNumbers";
 import { updateExcelColumnNames } from "../constants/constants";
 import { LastNameQuery } from "./../utils/QueryExtract/Name";
+import { GetEmailPatternQuery } from "./../utils/QueryExtract/Email";
+import { processEmailsAndNames } from "./../utils/UpdateExcel/processEmailAndNames";
+import {guessEmail, EmailValidationResponse} from "./../utils/ZeroBounce/guessEmail";
+
 
 export {
   //interface
@@ -65,7 +73,10 @@ export {
   Response,
   GPTInterface,
   LlamaInterface,
-
+  EmailValidationResponse,
+  Employee,
+  EmployeeWithFilteredEmail,
+CompanyDataWithFilteredEmail,
   // ---------------------------------------------------
 
   //string
@@ -84,6 +95,10 @@ export {
   // ---------------------------------------------------
 
   //function
+  guessEmail,
+  Chat_GPT_35_Chat,
+  processEmailsAndNames,
+  GetEmailPatternQuery,
   LastNameQuery,
   updatePhoneNumberArray,
   getUpdatedCountryArray,
@@ -116,6 +131,7 @@ export {
   SendEmailQuery,
   extractEmail,
   Chat_GPT_35_Conversation,
+  getRandomElements,
   getRandomElement,
   updateColumnName,
   updateSecondObjectWithEmails,
