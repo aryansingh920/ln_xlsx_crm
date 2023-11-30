@@ -105,4 +105,24 @@ const uploadFile_post = async (req: Request, res: Response) => {
   }
 };
 
+// const diskStorageUploadFile_post = async (req: Request, res: Response) => {
+//   try {
+//     // Delete the uploads directory
+//     // await deleteDirectory(path.join(printCurrentDirectory(), "uploads"));
+//     // Create a new uploads directory
+//     // await createDirectory(path.join(printCurrentDirectory(), "uploads"));
+
+//     console.log("In upload file middleware", req.file);
+
+//     if (!req.file) {
+//       return res.status(400).send("No file uploaded.");
+//     }
+//     return res.status(200).json({ status: "success" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ status: "Server is not running", error: err });
+//   }
+// };
+
 export default { uploadFile_post };
+// export { diskStorageUploadFile_post };

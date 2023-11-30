@@ -101,19 +101,25 @@ export const processEmailsAndNames = async (
     getColumnCellsEmails.slice(1)
   );
 
-  // console.log("flattenObjects", flattenObjects);
+  console.log("getColumnCellsEmails", getColumnCellsEmails);
+  console.log("getColumnCellsCompany", getColumnCellsCompany);
+  console.log("getColumnCellsName", getColumnCellsName);
+  console.log("getColumnCellsFirstName", getColumnCellsFirstName);
+  console.log("getColumnCellsLastName", getColumnCellsLastName);
+
+  console.log("flattenObjects", flattenObjects);
 
   const EmailClearing: CompanyDataWithFilteredEmail =
     generateNewObject(flattenObjects);
 
-  // console.log("EmailClearing", EmailClearing);
+  console.log("EmailClearing", EmailClearing);
 
   let EmailName: { [key: string]: string } = {};
   for (let name in getColumnCellsName.slice(1)) {
     EmailName[getColumnCellsName.slice(1)[name]] = "";
   }
 
-  // console.log("EmailName", EmailName);
+  console.log("EmailName", EmailName);
 
   let EmailNameObject = updateSecondObjectWithEmails(EmailClearing, EmailName);
 
@@ -129,8 +135,10 @@ export const processEmailsAndNames = async (
     const EmployeeObjectWithoutEmail: CompanyDataWithFilteredEmail =
       filterEmployeesWithOutEmail(EmailClearing, companyName);
 
-    // console.log("EmployeeObjectWithEmail", EmployeeObjectWithEmail);
-    // console.log("EmployeeObjectWithoutEmail", EmployeeObjectWithoutEmail);
+    console.log("EmployeeObjectWithEmail", EmployeeObjectWithEmail);
+    console.log("EmployeeObjectWithoutEmail", EmployeeObjectWithoutEmail);
+
+    console.log("EmailObject", EmailNameObject);
 
     // //case 1 if email exists and there are more than 1 employees with email for the company and use of zerobounce guesser
     if (EmployeeObjectWithEmail[companyName].length > 0) {
@@ -141,18 +149,32 @@ export const processEmailsAndNames = async (
         EmailNameObject
       );
     }
+    //update files with emails of case 1
+    await updateFile(EmailNameObject, outputFilePath, columnNames);
 
+    // case 2 if email does not exist and there are more than 1 employees with email for the company and use of zerobounce guesser
+
+    // console.log("EmailNameObjectAfterCase1", EmailNameObject);
 
     console.log("----------------------------------------------------------");
     // }
   }
+};
 
+async function updateFile(
+  EmailNameObject: { [key: string]: string },
+  outputFilePath: string,
+  columnNames: string[]
+) {
   const EmailNameObjectValues: string[] = Object.values(EmailNameObject);
   EmailNameObjectValues.unshift(updateExcelColumnNames.Emails);
 
-  console.log("EmailNameObjectValues Finaleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", EmailNameObjectValues);
+  console.log(
+    "EmailNameObjectValues Finaleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    EmailNameObjectValues
+  );
 
-  await updateColumnByName(
+  return await updateColumnByName(
     pythonExecFile,
     PythonActions.UpdateColumnByName,
     outputFilePath,
@@ -161,9 +183,16 @@ export const processEmailsAndNames = async (
       findIndexByStringMatch(columnNames, updateExcelColumnNames.Emails)
     ],
     EmailNameObjectValues
-  );
-};
-
+  )
+    .then((res) => {
+      console.log("updated file", res);
+      return true;
+    })
+    .catch((err) => {
+      console.log("error in updated file", err);
+      return false;
+    });
+}
 
 async function case1(
   EmployeeObjectWithEmail: CompanyDataWithFilteredEmail,
@@ -195,9 +224,10 @@ async function case1(
         });
       // console.log("emailGuess", emailGuess);
       EmailNameObject[EmployeeWithoutEmail.Name] = emailGuess;
-      // return EmailNameObject;
     }
   }
-  // console.log("EmailNameObjectForAfter", EmailNameObject);
+
   return EmailNameObject;
 }
+
+async function case2() {}
