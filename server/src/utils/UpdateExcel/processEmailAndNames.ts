@@ -101,29 +101,29 @@ export const processEmailsAndNames = async (
     getColumnCellsEmails.slice(1)
   );
 
-  console.log("getColumnCellsEmails", getColumnCellsEmails);
-  console.log("getColumnCellsCompany", getColumnCellsCompany);
-  console.log("getColumnCellsName", getColumnCellsName);
-  console.log("getColumnCellsFirstName", getColumnCellsFirstName);
-  console.log("getColumnCellsLastName", getColumnCellsLastName);
+  // console.log("getColumnCellsEmails", getColumnCellsEmails);
+  // console.log("getColumnCellsCompany", getColumnCellsCompany);
+  // console.log("getColumnCellsName", getColumnCellsName);
+  // console.log("getColumnCellsFirstName", getColumnCellsFirstName);
+  // console.log("getColumnCellsLastName", getColumnCellsLastName);
 
-  console.log("flattenObjects", flattenObjects);
+  // console.log("flattenObjects", flattenObjects);
 
   const EmailClearing: CompanyDataWithFilteredEmail =
     generateNewObject(flattenObjects);
 
-  console.log("EmailClearing", EmailClearing);
+  // console.log("EmailClearing", EmailClearing);
 
   let EmailName: { [key: string]: string } = {};
   for (let name in getColumnCellsName.slice(1)) {
     EmailName[getColumnCellsName.slice(1)[name]] = "";
   }
 
-  console.log("EmailName", EmailName);
+  // console.log("EmailName", EmailName);
 
   let EmailNameObject = updateSecondObjectWithEmails(EmailClearing, EmailName);
 
-  console.log("EmailNameObjectInitializeeeeeeeeeeeeee", EmailNameObject);
+  // console.log("EmailNameObjectInitializeeeeeeeeeeeeee", EmailNameObject);
 
   for (let companyName in EmailClearing) {
     console.log("----------------------------------------------------------");
@@ -135,10 +135,10 @@ export const processEmailsAndNames = async (
     const EmployeeObjectWithoutEmail: CompanyDataWithFilteredEmail =
       filterEmployeesWithOutEmail(EmailClearing, companyName);
 
-    console.log("EmployeeObjectWithEmail", EmployeeObjectWithEmail);
-    console.log("EmployeeObjectWithoutEmail", EmployeeObjectWithoutEmail);
+    // console.log("EmployeeObjectWithEmail", EmployeeObjectWithEmail);
+    // console.log("EmployeeObjectWithoutEmail", EmployeeObjectWithoutEmail);
 
-    console.log("EmailObject", EmailNameObject);
+    // console.log("EmailObject", EmailNameObject);
 
     // //case 1 if email exists and there are more than 1 employees with email for the company and use of zerobounce guesser
     if (EmployeeObjectWithEmail[companyName].length > 0) {
@@ -153,6 +153,17 @@ export const processEmailsAndNames = async (
     await updateFile(EmailNameObject, outputFilePath, columnNames);
 
     // case 2 if email does not exist and there are more than 1 employees with email for the company and use of zerobounce guesser
+
+    // if (EmployeeObjectWithEmail[companyName].length > 0) {
+    //   EmailNameObject = await case2(
+    //     EmployeeObjectWithEmail,
+    //     companyName,
+    //     EmailNameObject,
+    //     EmployeeObjectWithoutEmail
+    //   );
+    // }
+    // //update files with emails of case 2
+    // await updateFile(EmailNameObject, outputFilePath, columnNames);
 
     // console.log("EmailNameObjectAfterCase1", EmailNameObject);
 
@@ -230,4 +241,64 @@ async function case1(
   return EmailNameObject;
 }
 
-async function case2() {}
+async function case2(
+  EmployeeObjectWithEmail: CompanyDataWithFilteredEmail,
+  companyName: string,
+  EmailNameObject: { [key: string]: string },
+  EmployeeObjectWithoutEmail: CompanyDataWithFilteredEmail
+): Promise<{ [key: string]: string }> {
+  const randomElementWithEmail = getRandomElement(
+    EmployeeObjectWithEmail[companyName]
+  );
+  const randomElementWithEmail2 = getRandomElement(
+    EmployeeObjectWithEmail[companyName]
+  );
+  const randomElementQuery: string = SendEmailQuery(
+    randomElementWithEmail?.Name || "",
+    randomElementWithEmail?.["First Name"] || "",
+    randomElementWithEmail?.["Last Name"] || "",
+    companyName,
+    randomElementWithEmail?.Email || [""]
+  );
+  const randomElementQuery2: string = SendEmailQuery(
+    randomElementWithEmail2?.Name || "",
+    randomElementWithEmail2?.["First Name"] || "",
+    randomElementWithEmail2?.["Last Name"] || "",
+    companyName,
+    randomElementWithEmail2?.Email || [""]
+  );
+  for (let employee of EmployeeObjectWithoutEmail[companyName]) {
+    const getEmailQuery: string = GetEmailQuery(
+      employee.Name,
+      employee["First Name"],
+      employee["Last Name"],
+      companyName
+    );
+    const query = `${randomElementQuery} and ${randomElementQuery2} so ${getEmailQuery} just give the email and no conversational text required no extra punctuation needed`;
+    const gpt_Response: LlamaInterface = await Chat_Llama_2(query);
+    // console.log("gpt_Response", gpt_Response);
+    const emailExtract = extractEmail(gpt_Response.LLAMA!);
+    const emailExtractLower = _.toLower(emailExtract!);
+    if (emailExtractLower !== "") {
+      await checkEmail(emailExtractLower).then((res: ZeroBounceResponse) => {
+        if (res.status === "valid") {
+          console.log("valid email");
+          appendStringToFile(dataSetFilePath.domainTxtFile, res.domain);
+          // console.log(res);
+          EmailNameObject[employee.Name] = emailExtractLower || "";
+        } else {
+          console.log("invalid email");
+          // console.log(res);
+          EmailNameObject[employee.Name] = "Email Invalid";
+        }
+      });
+    } else {
+      console.log("invalid email");
+      // console.log(res);
+      EmailNameObject[employee.Name] = "Email Invalid";
+    }
+    // console.log(emailVerify);
+  }
+
+  return EmailNameObject;
+}
