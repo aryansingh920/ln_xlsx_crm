@@ -269,7 +269,7 @@ async function case2(
     const emailExtractLower = _.toLower(emailExtract!);
     if (emailExtractLower !== "") {
       await checkEmail(emailExtractLower).then((res: ZeroBounceResponse) => {
-        if (res.status === "valid") {
+        if (res.status !== "invalid") {
           console.log("valid email");
           appendStringToFile(dataSetFilePath.domainTxtFile, res.domain);
           // console.log(res);

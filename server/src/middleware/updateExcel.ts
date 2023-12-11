@@ -24,7 +24,7 @@ import {
   findIndexByStringMatch,
   updateColumnName,
   processEmailsAndNames,
-  ProcessingFilePath
+  ProcessingFilePath,
 } from "../helper/imports";
 
 //----------------------------------------------
@@ -187,7 +187,6 @@ const processColumnsAndUpdate = async (
     updatedPhoneArray
   );
 };
-
 
 const updateColumnNamesAndRespond = async (
   outputFilePath: string,
