@@ -24,6 +24,7 @@ import {
   findIndexByStringMatch,
   updateColumnName,
   processEmailsAndNames,
+  ProcessingFilePath
 } from "../helper/imports";
 
 //----------------------------------------------
@@ -32,8 +33,11 @@ const Changes = async (req: Request, res: Response) => {
   try {
     await deleteAndCreateDirectory();
 
+    console.log("req.body", req);
+
     let removeColumnArray: string[] = [...req.body.removeColumnArray];
-    const inputFilePath = FilePath;
+    // console.log("removeColumnArray", removeColumnArray);
+    const inputFilePath = ProcessingFilePath;
     const outputFilePath = OutputFilePath;
 
     await deleteColumnsAndUpdate(
@@ -43,7 +47,7 @@ const Changes = async (req: Request, res: Response) => {
     );
 
     const columnNames = await getColumnNames(outputFilePath);
-    const excelFilePath = FilePath;
+    const excelFilePath = ProcessingFilePath;
 
     await processColumnsAndUpdate(columnNames, excelFilePath, outputFilePath);
     await processEmailsAndNames(outputFilePath, columnNames);

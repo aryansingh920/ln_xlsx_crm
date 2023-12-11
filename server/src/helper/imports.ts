@@ -8,6 +8,7 @@ import {
   OutputFilePath,
   pythonExecFile,
   PythonActions,
+  ProcessingFilePath,
 } from "../constants/constants";
 import {
   printCurrentDirectory,
@@ -43,6 +44,7 @@ import {
   Chat_GPT,
   Question_Answer,
   LlamaInterface,
+  Conversation_gpt35,
 } from "../utils/AI/AIEngine";
 import { getRandomElements, getRandomElement } from "../utils/RandomElement";
 import { updateColumnName } from "../utils/ExcelManipulation/updateColumnName";
@@ -86,6 +88,7 @@ CompanyDataWithFilteredEmail,
   OutputFilePath,
   pythonExecFile,
   PythonActions,
+  ProcessingFilePath,
 
   // ---------------------------------------------------
 
@@ -95,6 +98,7 @@ CompanyDataWithFilteredEmail,
   // ---------------------------------------------------
 
   //function
+  Conversation_gpt35,
   guessEmail,
   Chat_GPT_35_Chat,
   processEmailsAndNames,

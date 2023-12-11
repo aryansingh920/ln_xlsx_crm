@@ -1,4 +1,5 @@
 import {
+  Conversation_gpt35,
   CompanyDataWithFilteredEmail,
   Employee,
   EmployeeWithFilteredEmail,
@@ -101,14 +102,6 @@ export const processEmailsAndNames = async (
     getColumnCellsEmails.slice(1)
   );
 
-  // console.log("getColumnCellsEmails", getColumnCellsEmails);
-  // console.log("getColumnCellsCompany", getColumnCellsCompany);
-  // console.log("getColumnCellsName", getColumnCellsName);
-  // console.log("getColumnCellsFirstName", getColumnCellsFirstName);
-  // console.log("getColumnCellsLastName", getColumnCellsLastName);
-
-  // console.log("flattenObjects", flattenObjects);
-
   const EmailClearing: CompanyDataWithFilteredEmail =
     generateNewObject(flattenObjects);
 
@@ -135,12 +128,7 @@ export const processEmailsAndNames = async (
     const EmployeeObjectWithoutEmail: CompanyDataWithFilteredEmail =
       filterEmployeesWithOutEmail(EmailClearing, companyName);
 
-    // console.log("EmployeeObjectWithEmail", EmployeeObjectWithEmail);
-    // console.log("EmployeeObjectWithoutEmail", EmployeeObjectWithoutEmail);
 
-    // console.log("EmailObject", EmailNameObject);
-
-    // //case 1 if email exists and there are more than 1 employees with email for the company and use of zerobounce guesser
     if (EmployeeObjectWithEmail[companyName].length > 0) {
       EmailNameObject = await case1(
         EmployeeObjectWithEmail,
@@ -154,16 +142,16 @@ export const processEmailsAndNames = async (
 
     // case 2 if email does not exist and there are more than 1 employees with email for the company and use of zerobounce guesser
 
-    // if (EmployeeObjectWithEmail[companyName].length > 0) {
-    //   EmailNameObject = await case2(
-    //     EmployeeObjectWithEmail,
-    //     companyName,
-    //     EmailNameObject,
-    //     EmployeeObjectWithoutEmail
-    //   );
-    // }
-    // //update files with emails of case 2
-    // await updateFile(EmailNameObject, outputFilePath, columnNames);
+    if (EmployeeObjectWithEmail[companyName].length > 0) {
+      EmailNameObject = await case2(
+        EmployeeObjectWithEmail,
+        companyName,
+        EmailNameObject,
+        EmployeeObjectWithoutEmail
+      );
+    }
+    //update files with emails of case 2
+    await updateFile(EmailNameObject, outputFilePath, columnNames);
 
     // console.log("EmailNameObjectAfterCase1", EmailNameObject);
 
@@ -275,9 +263,9 @@ async function case2(
       companyName
     );
     const query = `${randomElementQuery} and ${randomElementQuery2} so ${getEmailQuery} just give the email and no conversational text required no extra punctuation needed`;
-    const gpt_Response: LlamaInterface = await Chat_Llama_2(query);
+    const gpt_Response: GPTInterface = await Conversation_gpt35(query);
     // console.log("gpt_Response", gpt_Response);
-    const emailExtract = extractEmail(gpt_Response.LLAMA!);
+    const emailExtract = extractEmail(gpt_Response.result!);
     const emailExtractLower = _.toLower(emailExtract!);
     if (emailExtractLower !== "") {
       await checkEmail(emailExtractLower).then((res: ZeroBounceResponse) => {

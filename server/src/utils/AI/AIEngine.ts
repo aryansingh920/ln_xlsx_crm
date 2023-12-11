@@ -14,7 +14,7 @@ export interface LlamaInterface {
   LLAMA: string | null;
 }
 
-export async function Conversation_gpt35(query: String): Promise<void> {
+export async function Conversation_gpt35(query: String): Promise<GPTInterface> {
   const options = {
     method: "POST",
     url: "https://open-ai21.p.rapidapi.com/conversationgpt35",

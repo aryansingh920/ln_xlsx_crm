@@ -46,10 +46,24 @@ const FilePath: string = path.join(
   `../../uploads/${Constants.FileName}`
 );
 
+const FileDirectoryPath: string = path.join(__dirname, `../../uploads/`);
+
+const ProcessingFilePath: string = path.join(
+  __dirname,
+  `../../processing/${Constants.FileName}`
+);
+
+const ProcessingDirectoryPath: string = path.join(
+  __dirname,
+  `../../processing/`
+);
+
 const OutputFilePath: string = path.join(
   __dirname,
   `../../output/${Constants.FileName}`
 );
+
+const OutputDirectoryPath: string = path.join(__dirname, `../../output/`);
 
 const updateExcelColumnNames: Record<string, string> = {
   FirstName: "First Name",
@@ -93,5 +107,9 @@ export {
   PythonActions,
   dataSetFilePath,
   geoPythonExecFile,
+  ProcessingFilePath,
+  FileDirectoryPath,
+  ProcessingDirectoryPath,
+  OutputDirectoryPath,
 };
 

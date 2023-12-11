@@ -9,6 +9,7 @@ import {
   createDirectory,
   Constants,
   FilePath,
+  ProcessingFilePath,
   getColumnNames,
   getExcelFileDetails,
   _,
@@ -21,12 +22,12 @@ import {
 //----------------------------------------------
 //----------------------------------------------
 
-const uploadFile_post = async (req: Request, res: Response) => {
+const processFiles = async (req: Request, res: Response) => {
   try {
     // Delete the uploads directory
-    await deleteDirectory(path.join(printCurrentDirectory(), "uploads"));
+    // await deleteDirectory(path.join(printCurrentDirectory(), "uploads"));
     // Create a new uploads directory
-    await createDirectory(path.join(printCurrentDirectory(), "uploads"));
+    // await createDirectory(path.join(printCurrentDirectory(), "uploads"));
 
     if (!req.file) {
       return res.status(400).send("No file uploaded.");
@@ -62,7 +63,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
         });
 
         // Define the output file path and name (change as needed)
-        const outputFilePath = FilePath;
+        const outputFilePath = ProcessingFilePath;
 
         // Save the new workbook to the specified path
         return saveExcelFile(newWorkbook, outputFilePath);
@@ -71,7 +72,7 @@ const uploadFile_post = async (req: Request, res: Response) => {
         // Send a response indicating success or provide a download link
 
         //excel file path
-        const excelFilePath = FilePath;
+        const excelFilePath = ProcessingFilePath;
         const excelFileDetails = await getExcelFileDetails(excelFilePath);
         const columnNames = await getColumnNames(excelFilePath);
 
@@ -124,5 +125,5 @@ const uploadFile_post = async (req: Request, res: Response) => {
 //   }
 // };
 
-export default { uploadFile_post };
+export default { processFiles };
 // export { diskStorageUploadFile_post };
