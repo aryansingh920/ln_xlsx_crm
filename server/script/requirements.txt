@@ -1,0 +1,7 @@
+xlrd
+pandas
+numpy
+openpyxl
+geopy
+beautifulsoup4
+requests

@@ -1,0 +1,108 @@
+/* Hide scrollbar track */
+::-webkit-scrollbar {
+  width: 0px;
+  /* Set the width of the scrollbar */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+  /* Adjust the alpha value for transparency */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  /* Adjust the alpha value for transparency */
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+  /* Set the scrollbar track to transparent */
+}
+
+.App {
+  text-align: center;
+  /* height: 100vh; */
+  /* width: 100% !important; */
+  /* //make it scrollable  */
+  /* overflow-y: scroll; */
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  /* -ms-overflow-style: none; */
+  /* IE and Edge */
+  /* scrollbar-width: none; */
+  /* margin: 5rem; */
+}
+
+.Form {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 1rem;
+  width: 70%;
+  /* width: -moz-fit-content; */
+}
+
+.uk-navbar-container,
+.accordion-item {
+  width: 100% !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 8px 32px 0 rgba(158, 164, 255, 0.37) !important;
+  backdrop-filter: blur(9px) !important;
+  -webkit-backdrop-filter: blur(9px) !important;
+}
+/* body {
+  margin: 0;
+  padding: 0;
+  background-image: url('https://picsum.photos/1920/1120');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+} */
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  /* Make sure the body is a positioned element for the overlay */
+  background-image: url('https://cdn.wallpapersafari.com/3/29/bHjKoY.png');
+  background-size: cover;
+  /* background-repeat: no-repeat; */
+  background-position: center;
+  position: sticky;
+  height: 100vh;
+  width: 100vw;
+}
+
+body::before,
+html::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.589);
+  /* box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); */
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  /* Adjust the alpha value for the desired level of transparency */
+}
+
+h1,
+h2,
+h3,
+h4,
+
+p,
+button {
+  color: rgb(255, 255, 255) !important;
+}
+
+

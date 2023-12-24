@@ -1,0 +1,28 @@
+POST http://localhost:3001/updateDownload
+Content-Type: application/json
+
+{
+  "fileName": "4.xlsx",
+  "removeColumnArray": [
+    "Current Pro Email",
+    "Current Personal Email",
+    "Current Pro Emails",
+    "Current Personal Emails",
+    "Added At",
+    "Company Acquirer",
+    "Company Addresses",
+    "Company Page Url",
+    "Company Description",
+    "Company Name",
+    "Company Universal Name",
+    "Company Type",
+    "Company Industries",
+    "Company Industry Name",
+    "Company Founded On",
+    "Company rank For Top Companies",
+    "Company Specialities",
+    "Company Staff Count",
+    "Company Staff Interval",
+    "Company Follower Count"
+  ]
+}
