@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+cd server/
+
 # Create a virtual environment named "automation"
 python -m venv automation
 
@@ -16,13 +19,13 @@ pip install -r requirements.txt
 export LINKEDIN_USERNAME=""
 export LINKEDIN_PASSWORD=""
 
-# Change to the linkedin directory
-cd linkedin/
+
 
 # Check if the virtual environment is activated
 if [ "$VIRTUAL_ENV" != "" ]; then
     # Run the Python script within the virtual environment
-    python login.py
+
+    uvicorn main:app --reload --host --port 3003
 else
     echo "Error: Virtual environment is not activated. Please activate the 'automation' environment."
 fi

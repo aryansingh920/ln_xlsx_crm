@@ -2,6 +2,8 @@
 /.vscode
 /server/python/__pycache__
 
+
+
 /server/.env
 /server/.vs
 /server/.git
@@ -35,5 +37,5 @@
 /.hintrc
 
 
-/auto/automation
+/auto/server/automation
 /auto/chromedriver-win64
